@@ -274,15 +274,60 @@
         </div>
       </article></div></div>
 </section>
-<section class="methodology" id="methodology" aria-label="AI 产品方法">
-        <h2 class="section-heading">统一的 AI 产品方法</h2>
-        <ol class="principles">
-          <li>先定义用户任务和成功标准，再决定是否需要 Agent</li>
-          <li>确定性计算、权限和硬规则留给工具/工作流；模型负责非结构化理解、解释和草稿</li>
-          <li>AI 输出必须可核验、可修改、可拒绝、可恢复</li>
-          <li>离线评测判断能否上线，在线行为判断是否创造价值</li>
-          <li>团队成果、个人贡献、方案目标和真实结果分开表达</li>
-        </ol>
+    <section class="methodology" id="methodology" aria-label="AI 产品方法论">
+        <h2 class="section-heading">AI 产品方法论</h2>
+        <p class="iso-intro"><strong>ISO = Intention（意图锚定）→ Solution（方案设计）→ Outcome（结果验证）</strong>。安克等科技公司广泛采用的产品落地三段论，针对 AI 产品特性做了完整适配。核心逻辑：<em>先把问题定义对，再把方案设计稳，最后用数据验证值不值。</em></p>
+
+        <div class="iso-grid">
+          <div class="iso-phase iso-i">
+            <div class="iso-tag">I · Intention</div>
+            <h3>意图锚定 · 先定义问题，再定义 AI</h3>
+            <p>问题定义错了，后面全错。AI 产品 80% 的失败源于第一步没搞清楚「到底要解决什么」。</p>
+            <ul>
+              <li>从业务场景倒推任务，不从技术能力反向套场景——避免「为了 AI 而 AI」。</li>
+              <li>动手前量化成功标准，定义「什么叫做好了」；不能只写准确率，还要写业务接受阈值。</li>
+              <li>AI 必要性证伪：规则能解决的就别用 AI；只在「非结构化输入 + 无明确规则 + 容错可接受」时才用模型。</li>
+              <li>前置划定权限红线：AI 能做什么、不能做什么，用系统硬约束而非仅靠 Prompt。</li>
+            </ul>
+          </div>
+
+          <div class="iso-phase iso-s">
+            <div class="iso-tag">S · Solution</div>
+            <h3>方案设计 · 权责分离，人机协同</h3>
+            <p>AI 不是替代人，是放大人。核心不是「让 AI 多能干」，而是「人和 AI 怎么配合最稳」。</p>
+            <ul>
+              <li>三层分工：规则层（确定性逻辑/权限/格式，零容错）→ AI 层（理解/生成/初稿）→ 人工层（最终决策/审核）。</li>
+              <li>AI 输出四步可控：<strong>核验 → 修改 → 驳回 → 回滚</strong>，每一步都留痕可追溯。</li>
+              <li>需要时多 Agent 协作 + 对抗性审查，降低单模型幻觉与偏差。</li>
+              <li>硬约束写代码、软引导写 Prompt、Few-shot 校准；数据安全：密钥进环境变量、敏感信息先脱敏。</li>
+              <li>容错与降级：自动重试 → 降级到规则 → 转人工，假设 AI 一定会出错，提前设计退路。</li>
+            </ul>
+          </div>
+
+          <div class="iso-phase iso-o">
+            <div class="iso-tag">O · Outcome</div>
+            <h3>结果验证 · 分阶段闭环，用数据说话</h3>
+            <p>AI 产品不能「上线即终点」，必须持续验证、持续迭代：先离线验证稳不稳，再在线验证值不值。</p>
+            <ul>
+              <li>离线评测：功能正确性、稳定性、长稳测试、容错率（AI 用「评分制」而非二元判断）。</li>
+              <li>在线验证分层：<strong>业务层指标 &gt; 产品层指标 &gt; AI 层指标</strong>——准确率 99% 用户不用等于零价值。</li>
+              <li>成本效益：单位任务的 AI 成本 + 人工复核成本 &lt; 纯人工成本，才有规模化价值。</li>
+              <li>bad case 驱动迭代：收集 → 分类 → 归因 → 优化 → 回归，形成闭环。</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="iso-map-title">本作品集项目与 ISO 框架的对应</h3>
+        <div class="iso-map">
+          <div class="iso-map-row"><span class="iso-p">招小帮</span><span class="iso-i-txt"><b>I</b> 客户经理找客户难→可解释经营看板</span><span class="iso-s-txt"><b>S</b> 策略 Agent+人工确认+复盘预警</span><span class="iso-o-txt"><b>O</b> 找客户效率提升</span></div>
+          <div class="iso-map-row"><span class="iso-p">Remote Dev Agent</span><span class="iso-i-txt"><b>I</b> 手机写代码→最小权限远程开发</span><span class="iso-s-txt"><b>S</b> 双模型分工+对抗审查+diff确认</span><span class="iso-o-txt"><b>O</b> 6h长稳+任务完成率</span></div>
+          <div class="iso-map-row"><span class="iso-p">电池合规</span><span class="iso-i-txt"><b>I</b> 展示看板→四层证据链映射</span><span class="iso-s-txt"><b>S</b> 规则对齐+AI解释+人工判定</span><span class="iso-o-txt"><b>O</b> 样本映射准确率</span></div>
+          <div class="iso-map-row"><span class="iso-p">AI 保障管家</span><span class="iso-i-txt"><b>I</b> AI卖保险→需求澄清分流</span><span class="iso-s-txt"><b>S</b> 自助/追问/人工三级分流</span><span class="iso-o-txt"><b>O</b> 需求识别+转人工率</span></div>
+          <div class="iso-map-row"><span class="iso-p">慢病用药</span><span class="iso-i-txt"><b>I</b> 用药提醒→服药体验+就诊摘要</span><span class="iso-s-txt"><b>S</b> 规则提醒+AI摘要+医生权重</span><span class="iso-o-txt"><b>O</b> 口述完整度+留存</span></div>
+          <div class="iso-map-row"><span class="iso-p">Perfume36</span><span class="iso-i-txt"><b>I</b> 香水推荐→36题香调人格</span><span class="iso-s-txt"><b>S</b> 问卷+标签匹配+分享闭环</span><span class="iso-o-txt"><b>O</b> 完成率+分享率</span></div>
+        </div>
+
+        <p class="methodology-conclusion">贯穿三阶段：可解释性（AI 必须说清「为什么这么建议」）、渐进式上线（内部→灰度→全量，带回滚开关）、人机协同最终形态（AI 做初稿，人做决策）。</p>
       </section>
 
 </main>
