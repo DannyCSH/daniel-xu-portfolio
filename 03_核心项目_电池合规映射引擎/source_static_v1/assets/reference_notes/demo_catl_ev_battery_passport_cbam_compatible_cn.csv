@@ -1,0 +1,22 @@
+模块,CATL原始数据,系统翻译后字段,Demo示例值,对应欧盟电池法要求,是否兼容CBAM风格字段,需要什么证据,谁来确认,谁能看,当前demo状态,备注
+基本身份,公司主数据,manufacturer（制造商）,CATL,制造商识别,否,营业执照/年报,内部确认,公开,可直接填充,公司级字段可直接映射
+产品锚点,产品主数据,battery model identifier（电池型号）,SXP-CTP-PACK-DEMO-01,产品级锚点,是,型号注册表/产品主数据,内部确认,受限,已设置demo占位,真实型号可内部替换
+产品锚点,产品主数据,battery category（产品类别）,EV battery（电动汽车动力电池）,适用范围判定,否,技术规格书,内部确认,公开,可直接填充,选择EV类是因为法规要求最复杂
+产品锚点,技术主数据,chemistry（化学体系）,LFP（磷酸铁锂）,护照公开层,间接,规格书/BOM,内部确认,公开/部分受限,可直接填充,决定上游材料范围
+产品锚点,工厂主数据,manufacturing plant（制造工厂）,CN-JS-PLANT-DEMO-01,Article 7工厂锚点,是,工厂注册表/生产登记,内部确认,受限,已设置demo占位,plant-level 是 EU 核心粒度
+期间,生产台账与报告期规则,reporting period（报告期）,2025Q4,碳足迹声明周期,是,排产记录/报告期规则,方法复核,受限,已设置demo占位,可借鉴 CBAM reporting discipline
+碳足迹,PCF/LCA计算,total carbon footprint（总碳足迹）,待CATL填充 kg CO2e/kWh,Article 7核心输出,间接,BOM/能耗/运输/回收数据,第三方或合规核验,公开,等待真实数据,法律逻辑按 PEF 不是按 scope 总量
+碳足迹,PCF/LCA计算,lifecycle stage split（分阶段碳足迹）,原材料/生产/分销/终端回收,Article 7拆分,是,生命周期计算底稿,第三方或合规核验,公开,结构已确定,方便接上游 PCF
+能源,能源系统,plant electricity mix（工厂电力结构）,电网电+绿电+PPA,生产阶段依据,是,电表/发票/绿证/PPA,第三方复核,受限,字段已定义,与 scope 2 有数据重叠但法律逻辑不同
+能源,工厂能耗系统,direct manufacturing energy input（制造阶段能源投入）,待CATL填充,生产阶段依据,是,电表/蒸汽/燃气记录,第三方复核,机密,等待真实数据,可对齐 installation-level 纪律
+材料,材料管理系统,recycled content（再生材料含量）,待CATL填充,再生含量要求,间接,质量平衡/回收证明,第三方或合规核验,公开,等待真实数据,公司级回收叙事需转成产品级声明
+尽调,合规系统,due diligence policy link（尽调政策链接）,CATL battery due diligence policy,尽调公开层,间接,政策文件/审计记录,合规复核,公开,可先挂现有政策,体现责任采购
+尽调,供应链系统,critical raw materials traceability（关键原材料追溯）,lithium/graphite/aluminium/copper/steel,尽调支撑,是,供应商声明/追溯记录,第三方抽查,受限,结构已定义,CBAM兼容入口
+技术文档,质量系统,test reports（测试报告）,存在占位,Annex VIII/Annex XIII,否,测试报告原件,正式合规评估,仅公告机构/监管,等待真实文件,不能用 ESG 直接替代
+技术文档,技术文档系统,technical documentation（技术文档）,存在占位,Annex VIII,否,图纸/说明书/计算书,正式合规评估,仅公告机构/监管,等待真实文件,是产品准入硬材料
+护照,护照系统,QR / battery passport object（护照对象）,可生成,Article 13/Annex XIII,可附带影子字段,结构化数据包/访问日志,系统一致性校验,分层,可原型化,后续前端很适合
+个体层,序列化系统,individual battery identifier（个体电池编号）,可序列化占位,个体电池层,否,序列号/谱系记录,系统校验,合法利益相关方,可原型化,不建议公开
+CBAM影子,供应商PCF,aluminium precursor embedded emissions（铝前驱材料嵌入排放）,待供应商填充,非电池法必填,是,供应商排放声明/验证报告,供应商核验或抽查,受限,结构已定义,重点兼容字段
+CBAM影子,供应商PCF,steel precursor embedded emissions（钢材嵌入排放）,待供应商填充,非电池法必填,是,供应商排放声明/验证报告,供应商核验或抽查,受限,结构已定义,重点兼容字段
+CBAM影子,供应商系统,precursor installation ID（上游工厂识别）,待供应商填充,尽调补充,是,工厂识别/报告期记录,供应商核验,受限,结构已定义,对齐 CBAM installation
+权限,权限系统,access rule（访问规则）,public/legitimate interest/authority/internal,Annex XIII分层访问,是,访问矩阵/日志,系统审计,内部配置,可原型化,也是保护CATL数据主权的关键

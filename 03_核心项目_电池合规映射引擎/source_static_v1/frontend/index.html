@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CATL 四层映射 Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <p class="eyebrow">HKU x CATL Demo</p>
+          <h1>四层映射前端样板</h1>
+          <p class="brand-copy">
+            这不是官方报送系统，而是一个让同学、老师和后续开发者都能快速看懂的演示前端。
+          </p>
+        </div>
+
+        <nav class="nav-list" id="nav-list"></nav>
+
+        <div class="sidebar-note">
+          <p class="note-title">一句人话</p>
+          <p id="core-message"></p>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="hero">
+          <div>
+            <p class="eyebrow">Demo Product</p>
+            <h2 id="product-title"></h2>
+            <p id="product-subtitle" class="hero-subtitle"></p>
+          </div>
+          <div class="hero-stats" id="hero-stats"></div>
+        </header>
+
+        <section class="section-panel" id="view-overview"></section>
+        <section class="section-panel hidden" id="view-eu"></section>
+        <section class="section-panel hidden" id="view-cbam"></section>
+        <section class="section-panel hidden" id="view-layers"></section>
+        <section class="section-panel hidden" id="view-catl"></section>
+        <section class="section-panel hidden" id="view-dev"></section>
+      </main>
+    </div>
+
+    <script src="./data/demo-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+

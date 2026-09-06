@@ -1,0 +1,19 @@
+主题,大陆/香港/CATL现有基础,欧盟电池法规要求,CBAM可借之处,初步映射状态,主要缺口,HKU建议动作
+制造商基本身份,大陆HKCATL均有公司主体披露,manufacturer/importer identification,企业识别和operator逻辑,可直接映射,基本无大缺口,直接做主数据清洗
+电池型号标识,CATL内部一定有但公开披露不充分,battery model identifier,无直接帮助,需转换映射,公开体系缺少产品级锚点,把内部产品主数据拉成映射主键
+制造工厂标识,CATL有工厂信息交易所多为公司级案例,manufacturing plant,installation识别逻辑可借,需转换映射,公司级语言未稳定下钻到plant级,建立model-to-plant绑定表
+报告期间,大陆HK多是年度披露周期,carbon footprint reporting period,特定reporting period逻辑可借,需转换映射,年度口径与产品生产周期错层,做reporting period转换规则
+核算边界,大陆HKCATL有Scope控制法合并边界,产品生命周期边界,installation boundary可借,需转换映射,公司边界不等于产品边界,做company boundary到product boundary规则
+Scope1和2排放,CATL已有carbon accounting report基础,归因到battery model加plant的碳足迹,核查纪律可借,需转换映射,需要分摊逻辑不可直接拿公司总量,做plant/process/model分摊模型
+上游材料与前驱体,CATL有供应链管理和部分supplier PCF基础,upstream precursor/material emissions,embedded emissions思路可借,需转换映射,供应商数据格式与欧盟生命周期语言不一致,做supplier PCF到lifecycle stage转换
+制造能耗与绿电,CATL有电力蒸汽绿证等内部数据,制造阶段能源输入与相关证据,installation-level记录纪律可借,需转换映射,需要把plant能源账和产品产出绑定,做能耗产量型号分摊表
+再生材料占比,CATL有回收和再生材料叙事,recycled content declaration,核查逻辑可借,需转换映射,企业回收能力不等于某型号电池再生含量,做material-specific mass balance表
+尽职调查,CATL已有responsible sourcing CREDIT供应商审核,battery due diligence policy and evidence,verifier discipline可借,需转换映射,管理口径强但欧盟法律字段化不足,做due diligence字段包和证据包
+供应商审核记录,CATL ESG里已有audit整改等内容,due diligence supporting evidence,核查思路可借,部分借用,不是一一对应欧盟公开字段,作为supporting evidence层
+测试报告和技术文档,大陆HK披露弱CATL内部可能有,test reports和technical documentation,无直接替代,需转换映射,公开披露体系几乎不能替代正式合规文件,单独建technical docs证据包
+电池护照公开层,大陆偏替代披露HK偏重要性,public layer,无直接对应,需转换映射,中国逻辑是可不披露欧盟逻辑是分层披露,做public restricted authority三层矩阵
+受限访问层,中国公开披露体系缺少细分,legitimate interest和authority access,registry和access discipline可借,需转换映射,需要角色与权限设计,做confidentiality-access matrix
+个体电池数据,CATL/BMS内部可能有,individual battery restricted data,无直接帮助,需转换映射,高敏感高权限控制要求,单独放restricted layer
+Catena-X和Tractus-X接口层,CATL已有pilot基础,不是法规要求本身但可承载交换,与CBAM registry有部分相似,部分借用,只能支撑交换不能替代法律合规,写成exchange layer不是compliance itself
+CBAM verifier discipline,与电池法规不是同一法,不能直接替代battery conformity,这是其本职强项,部分借用,场景不同商品范围也不同,借verifier workflow不直接借结论
+企业级ESG公开指标,大陆HKCATL很丰富,只能支撑部分public layer,无直接帮助,部分借用,只能做背景不能直接变battery passport,只挑不敏感且可公开字段入public layer

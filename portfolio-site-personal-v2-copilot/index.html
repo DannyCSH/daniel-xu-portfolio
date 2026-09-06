@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>许哲安 · AI 产品经理 · 个人作品集</title>
+  <meta name="description" content="许哲安 AI 产品经理个人作品集 — 把 AI 织进真实工作流。招小帮、Remote Dev Agent、电池合规四层映射引擎等案例。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="nameplate">
+        <h1 class="name">许哲安</h1>
+        <span class="name-sep" aria-hidden="true">·</span>
+        <span class="role">AI 产品经理</span>
+      </div>
+      <nav class="filter-nav" aria-label="项目筛选">
+        <button type="button" class="filter-btn active" data-filter="core" aria-pressed="true">核心项目</button>
+      </nav>
+      <div class="header-actions">
+        <a class="header-link" href="#methodology">方法</a>
+      </div>
+    </div>
+  </header>
+<main id="main">
+
+<section class="thesis" aria-label="作品摘要">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">PORTFOLIO · AI PRODUCT · 2026</p>
+        <h2 class="hero-title">把 AI 织进<br><em>真实工作流</em></h2>
+        <p class="core-ability">许哲安 · AI 产品经理。我专注的，是把「模糊的 AI 想法」变成「能跑起来、能验证、有边界的工作流」：从需求拆解到任务定义，再到模型、数据、规则、工具与人工审核的协同编排，并为失败、权限与反馈设计清晰闭环。六个案例覆盖 To B 客户经营、Agent 远程执行、合规数据治理与个人产品闭环。</p>
+        <div class="hero-actions">
+          <a class="hero-action hero-action-primary" href="#projects">浏览项目 <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </section>
+<section class="workspace" id="projects" aria-label="项目案例">
+  <div class="ws-head">
+    <span class="ws-rule"></span>
+    <h2 class="ws-title">作品项目</h2>
+    <span class="ws-rule"></span>
+  </div>
+  <div class="work-grid"><div class="work"><article id="p01" class="project-card" data-category="core">
+        <div class="card-header">
+          <span class="card-number" aria-hidden="true">01</span>
+          <h2 class="card-title">招小帮 · 对公客户经营助手</h2>
+          <span class="badge badge-team">团队项目</span>
+        </div>
+        <p class="card-subtitle">AI 驱动的对公客户经营助手 · 招商银行第 10 季数字金融挑战赛 AI 产品经理赛道全国线下决赛「优秀英才奖」（3 产品 + 3 数据，约 30 小时）</p>
+
+        <div class="project-actions" aria-label="招小帮展示入口">
+          <a class="project-link project-link-primary" href="http://127.0.0.1:8788/" target="_blank">网页端AI动态版Demo <span aria-hidden="true">↗</span></a>
+          <a class="project-link" href="../05_核心项目_招行客户营销综合看板/source_final_extracted/网页端/index.html?reset=1" target="_blank">网页端静态版Demo（演示备份）<span aria-hidden="true">↗</span></a>
+          <a class="project-link" href="../05_核心项目_招行客户营销综合看板/source_final_extracted/移动端/index.html" target="_blank">移动端Demo <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="card-body">
+          <section class="card-section">
+            <h3 class="section-label">背景</h3>
+            <p>对公客户经理并不缺数据，而是缺少四个连续判断：选谁、为什么现在做、如何触达、如何持续跟进。访谈显示两类不同焦虑：一线客户经理担心 AI 推荐错误且无法向客户解释；中后台人员则被海量信息筛选和重复工作淹没。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">任务</h3>
+            <p>在约 30 小时比赛周期内，把「一张地图装所有人」的直觉，收敛成「做优增量 / 盘活存量」两条可执行主线，并让每条主线都能落地为可解释、可复核的看板与 Agent 动作，而不是一个不可信的“一键生成方案”。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">做法</h3>
+            <p>参与客户访谈，梳理完整业务流程与泳道图，转为 Web/移动端原型需求。增量侧采用「区域面 → 产业链 → 企业点」下钻，存量侧优先展示经营变化、机会与风险；与 3 名数据同学共同定义模型到产品的接口，把授信额度预测、产业链景气、企业分层与查询能力转成客户筛选、推荐解释与经营方案。模型输出不直接等于业务动作，页面同时呈现推荐原因、数据来源、复核点和下一步任务；授信、风险与复杂客户方案保留人工最终决定。</p>
+            <p class="contribution-note">前端基于我的业务逻辑和需求文档，由生成式 AI 工具协助快速实现并反复验证；授信预测、产业链景气/企业分层、查询 Agent 属于数据同学和团队能力。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">成果</h3>
+            <p>与 5 名队友在约 30 小时内交付 Web/移动端 Demo、产品流程图、14 页答辩方案与专家汇报，形成从数据分析、Agent 研判到行动方案落地设计的完整产品闭环；获全国线下决赛「优秀英才奖」。我负责属地产业政策模块、参与客户画像与 UI/UX、承担约三分之一 PPT 设计，并梳理全部流程与 UI 跳转逻辑。经营与政策数据为演示数据，不冒充真实行内数据。</p>
+          </section>
+
+          <figure class="card-figure">
+            <img src="assets/web-home.png" alt="招小帮网页端首页 — 客户营销综合看板" loading="lazy" class="screenshot">
+            <figcaption>招小帮 · 网页端首页（客户营销综合看板）</figcaption>
+          </figure>
+        </div>
+      </article></div><div class="work"><article id="p02" class="project-card" data-category="core">
+        <div class="card-header">
+          <span class="card-number" aria-hidden="true">02</span>
+          <h2 class="card-title">Remote Dev Agent</h2>
+          <span class="badge badge-personal">个人项目</span>
+        </div>
+        <p class="card-subtitle">面向远程开发场景的本地 AI Agent 产品设计 · 手机 QQ 提交任务，本地可控目录内排队、执行、复核并回传</p>
+
+        <div class="project-actions" aria-label="Remote Dev Agent 展示入口">
+          <a class="project-link project-link-primary" href="https://github.com/DannyCSH/remote-dev-agent" target="_blank" rel="noopener">GitHub 公开仓库 <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="card-body">
+          <section class="card-section">
+            <h3 class="section-label">背景</h3>
+            <p>用户离开电脑后，仍希望在低门槛下调用本地 AI 能力：传统远程桌面交互成本高、单模型执行结果不稳定、公开部署默认权限风险过大——这是「本地 AI 遥控」想法普遍失败的原因。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">任务</h3>
+            <p>在可用性、结果可信度与默认安全边界三项约束下，把目标收敛为「移动端可触达、执行结果可校验、默认权限可控制」，并推动项目从个人原型升级为公开可部署版本。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">做法</h3>
+            <p>确定最小可行链路「QQ 消息入口 → 任务调度 → 双模型协作 → 本地执行回传」；针对复杂任务不确定性与单模型输出偏差，设计「Codex 负责任务拆解与对抗性审查、Claude Code 负责主执行」的双模型协作机制；在首次安装门槛、默认最小权限与后续扩展之间做取舍，设计桌面配置器、最小权限默认策略与按需扩权路径；完成敏感数据剥离、配置模板化、流程图与 GitHub 仓库封装。</p>
+            <div class="code-inline">QQ → NanoBot → Router/Queue → Claude Code 执行 → Codex 拆解/复审 → 本地结果与文件回传</div>
+            <ul class="feature-list">
+              <li>路由层区分快速本地命令、普通任务、文件发送和健康探针</li>
+              <li>默认限定工作区；全盘搜索和管理员中继需显式授权</li>
+              <li>运行态提供任务、会话、队列、健康快照、手机端短进度和诊断包</li>
+            </ul>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">成果</h3>
+            <p>作品集副本 57/57 Python 单元测试、7/7 PowerShell 验证通过；6 小时对抗性长稳 499 个状态样本中 427 healthy、72 degraded、0 failed；18 次端到端探针 16 次 finished、2 次超时。围绕消息通道假在线、配置复杂、权限边界模糊等关键体验问题，加入健康探针、自检脚本与自动化验证，累计完成 60+ 验证项，为长稳测试与公开发布建立质量基线。</p>
+          </section>
+
+          <div class="boundary-block">
+            <h3 class="section-label label-boundary">边界</h3>
+            <ul class="boundary-list">
+              <li>无规模用户；不能称为客户级强 SLA</li>
+              <li>长稳仍有尾延迟，任务 SLA 需分别看系统存活、任务完成、尾延迟和结果回传</li>
+            </ul>
+          </div>
+        </div>
+      </article></div><div class="work"><article id="p03" class="project-card" data-category="core">
+        <div class="card-header">
+          <span class="card-number" aria-hidden="true">03</span>
+          <h2 class="card-title">电池合规四层映射引擎</h2>
+          <span class="badge badge-personal">个人项目</span>
+        </div>
+        <p class="card-subtitle">EU Battery Regulation 合规证据链 · HKU–CATL 一周挑战赛核心竞争产品</p>
+
+        <div class="project-actions" aria-label="电池合规四层映射引擎展示入口">
+          <a class="project-link project-link-primary" href="http://127.0.0.1:5000/" target="_blank">打开动态版Demo <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="card-body">
+          <section class="card-section">
+            <h3 class="section-label">背景</h3>
+            <p>大陆披露与数据多为公司/工厂粒度，欧盟电池法规需要电池型号与制造工厂粒度的可核验证据；原始数据又不能简单出境。真正的问题不是「做一个合规看板」，而是让字段、证据、责任与可见范围可追溯。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">任务</h3>
+            <p>在 HKU–CATL 一周挑战赛时限内，把合规链路做成可演示、可检查、可回溯的产品，而不是停留在静态页面或高风险的不稳定 AI 解析上。</p>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">做法</h3>
+            <p>采用四层映射方法：字段映射、证据映射、核验映射、权限映射；核心计算使用可检查的 Python 规则，放弃比赛窗口内不稳定的 AI 文件解析版；从早期静态看板收敛为 Flask 动态工作台。</p>
+            <ol class="layers-list">
+              <li><strong>字段映射：</strong>现有数据对应哪个目标字段</li>
+              <li><strong>证据映射：</strong>该字段由哪些 BOM、电表、发票、PCF 或测试报告支持</li>
+              <li><strong>核验映射：</strong>内部、供应商、第三方或法定机构中谁确认</li>
+              <li><strong>权限映射：</strong>公众、客户、合法利益方、监管和内部各能看到什么</li>
+            </ol>
+          </section>
+
+          <section class="card-section">
+            <h3 class="section-label">成果</h3>
+            <p>通用模板与合成案例共 19 张工作表、86 个输入字段；Flask 测试客户端验证首页/填写/输出/健康接口均为 200，纯 Python 路径生成 14 张表（EU 29、CBAM 18、证据/核验/权限各 49 条），EU ZIP 含 12 个文件与 manifest。属个人研究原型，非官方/法定系统，规则中仍有示例因子与硬编码假设。</p>
+          
+          <figure class="card-figure">
+            <img src="assets/preview-battery.png" alt="电池合规四层映射引擎 · 动态版（字段 → 证据 → 核验 → 权限）" loading="lazy" class="screenshot">
+            <figcaption>电池合规四层映射引擎 · 动态版（可计算并导出 ZIP）</figcaption>
+          </figure>
+        </section>
+        </div>
+      </article></div><div class="work"><article id="p04" class="project-card" data-category="supplementary">
+        <div class="card-header">
+          <span class="card-number" aria-hidden="true">04</span>
+          <h2 class="card-title">AI 保障管家</h2>
+          <span class="badge badge-personal">个人项目</span>
+        </div>
+        <p class="card-subtitle">保险需求确认、分流与经理复核</p>
+        <div class="project-actions" aria-label="AI 保障管家展示入口">
+          <a class="project-link project-link-primary" href="../06_备选项目/AI保障管家/source_interview_demo/index.html" target="_blank">打开 Demo <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="card-body">
+          <section class="card-section">
+            <h3 class="section-label">背景</h3>
+            <p>用户说的是「怕生病后家庭扛不住」这类生活化担忧，而不是标准化保险需求；若模型直接推荐产品，既难解释，也容易把信息不完整的情况误导为可以成交。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">任务</h3>
+            <p>在 AI 不直接做“成交判断”的前提下，先做推荐前的需求澄清与交接，避免高风险决策被一次性模型输出带偏。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">做法</h3>
+            <p>先从对话中提取家庭结构、已有保障、预算和风险偏好，并让用户确认、补充或修改；随后按信息完整度和产品复杂度分为标准品自助、继续追问、转经理复核三条路径。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">成果</h3>
+            <p>不把目标定为「AI 卖保险」，而是做推荐前的需求澄清与交接工具。用户侧获得可理解的保障档案和下一步，经理侧获得结构化信息、推荐理由与待确认项。公开静态 Demo 在线、Node 后端支持结构化需求挖掘（当前未配置模型密钥、未接入真实招行业务）。</p>
+          
+          <figure class="card-figure">
+            <img src="assets/preview-insurance.png" alt="AI 保障管家 · 手机端需求澄清与分流" loading="lazy" class="screenshot">
+            <figcaption>AI 保障管家 · 手机端需求澄清与分流</figcaption>
+          </figure>
+        </section>
+        </div>
+      </article></div><div class="work"><article id="p05" class="project-card" data-category="supplementary">
+        <div class="card-header">
+          <span class="card-number" aria-hidden="true">05</span>
+          <h2 class="card-title">慢病用药小管家</h2>
+          <span class="badge badge-personal">个人项目</span>
+        </div>
+        <p class="card-subtitle">在满足慢病用药统计与提醒的基础上，增加每日服药体验标签；就诊前 AI 自动整合，方便患者口述病情</p>
+        <div class="project-actions" aria-label="慢病用药小管家展示入口">
+          <a class="project-link project-link-primary" href="https://dannycsh.github.io/meituan-medication-manager/" target="_blank" rel="noopener">打开 Demo <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="card-body">
+          <section class="card-section">
+            <h3 class="section-label">背景</h3>
+            <p>慢病管理不是单点提醒。患者需要在长期治疗中同时处理服药计划、漏服记录、库存、复诊准备和续方沟通；医疗建议和处方判断又不能交给不受控的前端模型。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">任务</h3>
+            <p>在一套规则稳定的提醒工具之上，补齐「患者看病时说得清楚」这件事——让服药期间的感受与异常能被记录并汇总，成为医患沟通的素材。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">做法</h3>
+            <p>以复诊周期而非单次打卡组织体验：建立用药计划，记录每日执行与体验标签（如副作用、胃部不适），根据库存触发备药提醒，周期结束自动把记录汇成复诊摘要，供续方或医患沟通；涉及诊疗判断明确回到医生与既有医疗流程。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">成果</h3>
+            <p>从泛化的「智能健康助手」收敛到规则驱动的治疗协作工具，突出给患者一个「能说清的病情时间线」。规则保证提醒、库存与摘要稳定可用；线上 Demo 可访问，仍有部分交互与测试缺口，继续迭代中。</p>
+          
+          <figure class="card-figure">
+            <img src="assets/preview-medication.png" alt="慢病用药小管家 · 居家期间每日服药记录与提醒" loading="lazy" class="screenshot">
+            <figcaption>慢病用药小管家 · 居家期间每日服药记录与提醒</figcaption>
+          </figure>
+        </section>
+        </div>
+      </article></div><div class="work"><article id="p06" class="project-card" data-category="supplementary">
+        <div class="card-header">
+          <span class="card-number" aria-hidden="true">06</span>
+          <h2 class="card-title">Perfume36 · 灵魂香调测试</h2>
+          <span class="badge badge-personal">个人项目</span>
+        </div>
+        <p class="card-subtitle">通过 36 道选择题测出你的灵魂香调——生成专属香气人格与解读。欢迎体验</p>
+        <div class="project-actions" aria-label="Perfume36 展示入口">
+          <a class="project-link project-link-primary" href="../06_备选项目/Perfume36_灵魂香调/Perfume-36 - 轻后端改造版.html?reset=1" target="_blank">打开 Demo <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="card-body">
+          <section class="card-section">
+            <h3 class="section-label">背景</h3>
+            <p>36 题测试若止步于一次性结果页，用户完成后缺少继续探索和分享的理由，内容体验也无法自然衔接轻量商业化。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">任务</h3>
+            <p>在内容型互动之外，设计一个留存、解锁与传播相互衔接的轻量闭环，而不是一次性玩法。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">做法</h3>
+            <p>完成测试后免费展示主导香气人格和有限解读；保存当前会话，解锁后恢复进度并展示 Top 3 推荐；结合渠道参数和分享海报，把体验延伸为可传播的结果页。</p>
+          </section>
+          <section class="card-section">
+            <h3 class="section-label">成果</h3>
+            <p>不把项目扩展为复杂电商，而是聚焦「测试完成—结果预览—会话保留—解锁恢复—分享传播」的最小商业闭环，优先保证体验连贯。当前含本地 mock 与 Worker 示例，尚无真实订单校验、正式 Worker 部署或转化数据。</p>
+          
+          <figure class="card-figure">
+            <img src="assets/preview-perfume.png" alt="Perfume36 · 灵魂香调测试引导页" loading="lazy" class="screenshot">
+            <figcaption>Perfume36 · 灵魂香调测试引导页</figcaption>
+          </figure>
+        </section>
+        </div>
+      </article></div></div>
+</section>
+<section class="methodology" id="methodology" aria-label="AI 产品方法">
+        <h2 class="section-heading">统一的 AI 产品方法</h2>
+        <ol class="principles">
+          <li>先定义用户任务和成功标准，再决定是否需要 Agent</li>
+          <li>确定性计算、权限和硬规则留给工具/工作流；模型负责非结构化理解、解释和草稿</li>
+          <li>AI 输出必须可核验、可修改、可拒绝、可恢复</li>
+          <li>离线评测判断能否上线，在线行为判断是否创造价值</li>
+          <li>团队成果、个人贡献、方案目标和真实结果分开表达</li>
+        </ol>
+        <p class="methodology-conclusion">主讲招小帮展示业务理解和协作；用 Remote Dev Agent 回答 Agent 技术、权限与评测；用电池合规引擎回答复杂 B 端数据与证据治理。补充案例在对应业务方向或面试追问时展开。</p>
+      </section>
+
+</main>
+<footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-name">许哲安 · AI 产品经理</p>
+      <p class="footer-credit">个人作品集 · 内容依据简历与事实记录整理，不添加未经验证的信息。</p>
+    </div>
+  </footer>
+<script src="app.js"></script>
+</body>
+</html>

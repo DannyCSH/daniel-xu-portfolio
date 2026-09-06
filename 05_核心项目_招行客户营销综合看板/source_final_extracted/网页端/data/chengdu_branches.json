@@ -1,0 +1,665 @@
+{
+  "returnCode": "SUC0000",
+  "count": 47,
+  "source": "https://map.cmbchina.com/api/map/getCmbData?cityName=%E6%88%90%E9%83%BD&type=B",
+  "branches": [
+    {
+      "id": "CMB-128535",
+      "branchNo": "128535",
+      "name": "招商银行成都武侯支行",
+      "shortName": "成都武侯支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.015462,
+        30.632093
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128560",
+      "branchNo": "128560",
+      "name": "招商银行成都通源街支行",
+      "shortName": "成都通源街支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.118984,
+        30.641874
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128520",
+      "branchNo": "128520",
+      "name": "招商银行成都人民南路四段支行（原成都新光路支行）",
+      "shortName": "成都人民南路四段支行（原成都新光路支行）",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.073159,
+        30.62045
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128550",
+      "branchNo": "128550",
+      "name": "招商银行成都锦江支行",
+      "shortName": "成都锦江支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.071251,
+        30.658392
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128595",
+      "branchNo": "128595",
+      "name": "招商银行成都红牌楼支行",
+      "shortName": "成都红牌楼支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.039811,
+        30.63668
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128575",
+      "branchNo": "128575",
+      "name": "招商银行成都科华路支行",
+      "shortName": "成都科华路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.083134,
+        30.628228
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128516",
+      "branchNo": "128516",
+      "name": "招商银行成都金牛支行",
+      "shortName": "成都金牛支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.034489,
+        30.69087
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128505",
+      "branchNo": "128505",
+      "name": "招商银行成都双楠支行",
+      "shortName": "成都双楠支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.034344,
+        30.651783
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128515",
+      "branchNo": "128515",
+      "name": "招商银行成都西体北路支行",
+      "shortName": "成都西体北路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.06469,
+        30.691528
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128555",
+      "branchNo": "128555",
+      "name": "招商银行成都青羊支行",
+      "shortName": "成都青羊支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.015231,
+        30.6706
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128517",
+      "branchNo": "128517",
+      "name": "招商银行成都金沙支行",
+      "shortName": "成都金沙支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.01421,
+        30.683643
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128565",
+      "branchNo": "128565",
+      "name": "招商银行成都益州大道支行",
+      "shortName": "成都益州大道支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.066647,
+        30.581025
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128510",
+      "branchNo": "128510",
+      "name": "招商银行成都小天支行",
+      "shortName": "成都小天支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.06244009,
+        30.63980084
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128528",
+      "branchNo": "128528",
+      "name": "招商银行成都天府大道支行",
+      "shortName": "成都天府大道支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.072731,
+        30.552218
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128585",
+      "branchNo": "128585",
+      "name": "招商银行成都羊犀支行",
+      "shortName": "成都羊犀支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.021225,
+        30.697718
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128545",
+      "branchNo": "128545",
+      "name": "招商银行成都锦官城支行",
+      "shortName": "成都锦官城支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.07869,
+        30.621892
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128527",
+      "branchNo": "128527",
+      "name": "招商银行成都鹭岛支行",
+      "shortName": "成都鹭岛支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.019935,
+        30.650337
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128525",
+      "branchNo": "128525",
+      "name": "招商银行成都清江支行",
+      "shortName": "成都清江支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.042772,
+        30.673855
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128519",
+      "branchNo": "128519",
+      "name": "招商银行成都天府菁蓉大厦支行",
+      "shortName": "成都天府菁蓉大厦支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.078477,
+        30.49763
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128540",
+      "branchNo": "128540",
+      "name": "招商银行成都玉双路支行",
+      "shortName": "成都玉双路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.099364,
+        30.662412
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128530",
+      "branchNo": "128530",
+      "name": "招商银行成都顺城大街支行",
+      "shortName": "成都顺城大街支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.07769269,
+        30.66938464
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128526",
+      "branchNo": "128526",
+      "name": "招商银行成都世纪朝阳支行",
+      "shortName": "成都世纪朝阳支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.102441,
+        30.645052
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128501",
+      "branchNo": "128501",
+      "name": "招商银行成都分行营业部",
+      "shortName": "成都分行营业部",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.065197,
+        30.548971
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128529",
+      "branchNo": "128529",
+      "name": "招商银行成都天顺路支行",
+      "shortName": "成都天顺路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.077751,
+        30.597147
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128532",
+      "branchNo": "128532",
+      "name": "招商银行成都新裕路支行（原广都支行）",
+      "shortName": "成都新裕路支行（原广都支行）",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.080656,
+        30.520147
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128539",
+      "branchNo": "128539",
+      "name": "招商银行成都龙湖三千支行",
+      "shortName": "成都龙湖三千支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.120011,
+        30.676579
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128552",
+      "branchNo": "128552",
+      "name": "招商银行成都府城大道支行",
+      "shortName": "成都府城大道支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.071289,
+        30.596967
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128556",
+      "branchNo": "128556",
+      "name": "招商银行成都金牛万达广场支行",
+      "shortName": "成都金牛万达广场支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.08131,
+        30.69424
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128558",
+      "branchNo": "128558",
+      "name": "招商银行成都成华支行",
+      "shortName": "成都成华支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.130543,
+        30.67247
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128508",
+      "branchNo": "128508",
+      "name": "招商银行成都盛治街支行",
+      "shortName": "成都盛治街支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.048979,
+        30.559744
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128566",
+      "branchNo": "128566",
+      "name": "招商银行成都福锦路支行",
+      "shortName": "成都福锦路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        103.994994,
+        30.623786
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128568",
+      "branchNo": "128568",
+      "name": "招商银行成都中环岛支行",
+      "shortName": "成都中环岛支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.058975,
+        30.566152
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128507",
+      "branchNo": "128507",
+      "name": "招商银行成都华润二十四城支行",
+      "shortName": "成都华润二十四城支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.125693,
+        30.650401
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128506",
+      "branchNo": "128506",
+      "name": "招商银行成都光华东三路支行",
+      "shortName": "成都光华东三路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        103.96694,
+        30.677786
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128578",
+      "branchNo": "128578",
+      "name": "招商银行成都世纪城支行",
+      "shortName": "成都世纪城支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.077759,
+        30.557583
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128576",
+      "branchNo": "128576",
+      "name": "招商银行成都椿树街支行",
+      "shortName": "成都椿树街支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.161806,
+        30.609847
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128504",
+      "branchNo": "128504",
+      "name": "招商银行成都万象南路支行",
+      "shortName": "成都万象南路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.057275,
+        30.591844
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128514",
+      "branchNo": "128514",
+      "name": "招商银行成都青羊工业园支行",
+      "shortName": "成都青羊工业园支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        103.967297,
+        30.691027
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128521",
+      "branchNo": "128521",
+      "name": "招商银行成都东大路支行",
+      "shortName": "成都东大路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.125934,
+        30.633199
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128523",
+      "branchNo": "128523",
+      "name": "招商银行成都蜀都中心支行",
+      "shortName": "成都蜀都中心支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.071046,
+        30.560273
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128531",
+      "branchNo": "128531",
+      "name": "招商银行成都高新支行（原成都星宸国际支行）",
+      "shortName": "成都高新支行（原成都星宸国际支行）",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.062539,
+        30.594482
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128524",
+      "branchNo": "128524",
+      "name": "招商银行成都新程南一路支行",
+      "shortName": "成都新程南一路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.096181,
+        30.507471
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128513",
+      "branchNo": "128513",
+      "name": "招商银行成都菁蓉汇支行",
+      "shortName": "成都菁蓉汇支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.068148,
+        30.544463
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128533",
+      "branchNo": "128533",
+      "name": "招商银行成都温江支行",
+      "shortName": "成都温江支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        103.887835,
+        30.692442
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128534",
+      "branchNo": "128534",
+      "name": "招商银行成都龙泉驿支行",
+      "shortName": "成都龙泉驿支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.197873,
+        30.578364
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128509",
+      "branchNo": "128509",
+      "name": "招商银行成都双流支行",
+      "shortName": "成都双流支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.033438,
+        30.501537
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    },
+    {
+      "id": "CMB-128537",
+      "branchNo": "128537",
+      "name": "招商银行成都青岛路支行",
+      "shortName": "成都青岛路支行",
+      "city": "成都市",
+      "cityAdcode": 510100,
+      "coord": [
+        104.065709,
+        30.459509
+      ],
+      "type": "B",
+      "source": "cmbchina-map-api"
+    }
+  ]
+}

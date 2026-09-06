@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>存量经营台 · 招商银行</title>
+  <link rel="stylesheet" href="../css/bank-shell.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body class="page-map workspace stock-ws stock-ws-sideonly">
+  <div class="workspace-app">
+    <div class="ws-body st-body">
+      <aside class="ws-panel left st-left">
+        <a class="st-side-back" href="../index.html">← 入口</a>
+        <div class="ws-brand st-side-brand">
+          <div class="seal">招</div>
+          <div>
+            <h1>存量经营台</h1>
+            <div class="sub">看板 · 行业洞察 · 产业政策</div>
+          </div>
+        </div>
+        <div class="ws-user">
+          <div class="avatar">赵</div>
+          <div>
+            <strong>赵明</strong>
+            <span>综合支行 · 对公客户经理</span>
+          </div>
+        </div>
+        <nav class="st-flow-steps" id="flowSteps" aria-label="主导航">
+          <button type="button" class="on" data-step="board">1 看板研判</button>
+          <button type="button" data-step="path">2 行业洞察</button>
+          <button type="button" data-step="policy">3 产业政策</button>
+        </nav>
+        <div class="st-side-search" id="searchWrap">
+          <input id="customerSearch" type="search" placeholder="搜索客户…" autocomplete="off" />
+          <button type="button" class="btn" id="customerSearchBtn">搜</button>
+        </div>
+      </aside>
+
+      <main class="ws-center">
+        <div class="ws-map-stage st-stage">
+          <!-- 1. Agent 报告看板 -->
+          <section class="view-layer scroll active" id="view-board">
+            <div class="stock-page">
+              <div class="st-grid-3">
+                <div class="card">
+                  <div class="card-hd"><h2>企业分层结构</h2></div>
+                  <div id="boardTierPie" class="st-chart"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd"><h2>上中下游分布</h2></div>
+                  <div id="boardStream" class="st-chart"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd"><h2>库内总体客户</h2></div>
+                  <div id="boardBook" class="st-chart"></div>
+                </div>
+              </div>
+
+              <div class="st-grid-2" style="margin-top:12px;">
+                <div class="card">
+                  <div class="card-hd"><h2>机会分 × 政策契合</h2><span class="hint">点击气泡进画像</span></div>
+                  <div id="boardOppScatter" class="st-chart"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd"><h2>结算活跃变动</h2><span class="hint">识别回升 / 下滑客户</span></div>
+                  <div id="boardSettleBar" class="st-chart"></div>
+                </div>
+              </div>
+
+              <div class="card" style="margin-top:12px;">
+                <div class="card-hd">
+                  <h2>重点客户清单</h2>
+                  <span class="hint">核心 / 骨干 · 高机会或需关注 · 点击进入画像</span>
+                </div>
+                <div class="st-table-wrap st-table-wrap-lg">
+                  <table class="st-table">
+                    <thead>
+                      <tr>
+                        <th>客户</th>
+                        <th>产业</th>
+                        <th>分层</th>
+                        <th>机会</th>
+                        <th>政策</th>
+                        <th>结算变动</th>
+                        <th>风险</th>
+                        <th>建议动作</th>
+                      </tr>
+                    </thead>
+                    <tbody id="boardFocusTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. 行业洞察 -->
+          <section class="view-layer scroll" id="view-path">
+            <div class="stock-page">
+              <div id="pathGood" class="st-path-block" hidden>
+                <div class="card-hd" style="margin-bottom:10px;"><h2>正向指标（Agent 报告）</h2><span class="hint">重点：政策影响</span></div>
+                <div class="st-grid-2">
+                  <div class="card">
+                    <div class="card-hd"><h2>正向维度对比</h2></div>
+                    <div id="pathPosBar" class="st-chart"></div>
+                  </div>
+                  <div class="card st-policy-card">
+                    <div class="card-hd"><h2>政策影响（任务三必备）</h2></div>
+                    <div id="pathPolicy" class="st-policy-body"></div>
+                    <div id="pathPolicyGauge" class="st-chart st-chart-sm"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="pathBad" class="st-path-block" hidden>
+                <div class="card">
+                  <div class="card-hd">
+                    <h2>行业景气度 Top</h2>
+                    <span class="hint">近十二月走势 · 点击曲线切换行业</span>
+                  </div>
+                  <div id="pathIndBoom" class="st-chart st-chart-lg"></div>
+                </div>
+              </div>
+
+              <div class="st-path-block" style="margin-top:14px;">
+                <div class="card-hd" style="margin-bottom:10px;"><h2>选择行业</h2><span class="hint">筛选高分节点企业</span></div>
+                <div class="st-ind-seg" id="indSeg"></div>
+              </div>
+
+              <div class="card" style="margin-top:12px;">
+                <div class="card-hd">
+                  <h2>行业内高分企业 / 节点</h2>
+                  <span class="hint" id="firmHint">点击进入客户画像</span>
+                </div>
+                <div id="firmRankChart" class="st-chart st-chart-lg"></div>
+                <div class="st-table-wrap" style="margin-top:8px;">
+                  <table class="st-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>节点 / 企业</th>
+                        <th>分层</th>
+                        <th>综合分</th>
+                        <th>归因</th>
+                      </tr>
+                    </thead>
+                    <tbody id="firmTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. 产业政策 -->
+          <section class="view-layer scroll" id="view-policy">
+            <div class="stock-page">
+              <div class="st-grid-2 st-policy-layout">
+                <div class="card">
+                  <div class="card-hd">
+                    <h2>最新政策</h2>
+                    <span class="hint">点击政策查看库内匹配</span>
+                  </div>
+                  <div class="st-policy-search">
+                    <input id="policySearch" type="search" placeholder="搜索政策，如：汽车、半导体、低空…" autocomplete="off" />
+                  </div>
+                  <div id="policyList" class="st-policy-list"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd">
+                    <h2>政策契合客户</h2>
+                    <span class="hint" id="policyMatchHint">选择左侧政策</span>
+                  </div>
+                  <div id="policyMatchChart" class="st-chart"></div>
+                  <div class="st-table-wrap st-table-wrap-lg" style="margin-top:8px;">
+                    <table class="st-table">
+                      <thead>
+                        <tr>
+                          <th>客户</th>
+                          <th>重点产业</th>
+                          <th>分层</th>
+                          <th>政策契合度</th>
+                          <th>建议</th>
+                        </tr>
+                      </thead>
+                      <tbody id="policyMatchTable"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 客户画像（点击进入，不在侧栏） -->
+          <section class="view-layer scroll" id="view-portrait">
+            <div class="stock-page">
+              <div class="st-portrait-hd">
+                <div>
+                  <div class="st-portrait-name" id="ptName">—</div>
+                  <div class="hint" id="ptMeta">—</div>
+                </div>
+                <div class="st-portrait-tags">
+                  <span class="chip" id="ptTier">—</span>
+                  <span class="chip" id="ptRisk">—</span>
+                </div>
+                <button type="button" class="btn ghost" data-go="path">← 返回行业洞察</button>
+              </div>
+              <div id="ptTags" class="cp-tags" style="margin:0 0 12px;"></div>
+              <div class="st-grid-3">
+                <div class="card">
+                  <div class="card-hd"><h2>经营雷达</h2></div>
+                  <div id="ptRadar" class="st-chart"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd"><h2>分层归因</h2></div>
+                  <div id="ptAttrBar" class="st-chart"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd"><h2>结算 / 存款变动</h2></div>
+                  <div id="ptDelta" class="st-chart"></div>
+                </div>
+              </div>
+              <div class="st-grid-2" style="margin-top:12px;">
+                <div class="card">
+                  <div class="card-hd"><h2>关键指标</h2></div>
+                  <div class="st-pt-kpis" id="ptKpis"></div>
+                </div>
+                <div class="card">
+                  <div class="card-hd"><h2>下一步建议</h2></div>
+                  <div id="ptAdvice" class="st-advice"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="kpiStrip" hidden></div><div id="pieChart" hidden></div><div id="pieLegend" hidden></div>
+  <div id="gaugeChart" hidden></div><div id="coverStats" hidden></div><div id="trendLeft" hidden></div>
+  <div id="policyTbody" hidden></div><div id="radarChart" hidden></div><div id="chainRank" hidden></div>
+  <div id="heatMap" hidden></div><div id="tierBlocks" hidden></div><div id="trendRight" hidden></div>
+  <div id="bottomKpis" hidden></div><div id="chainIcons" hidden></div>
+  <div id="mask" hidden></div><div id="drawer" hidden></div>
+  <div id="drawerTitle" hidden></div><div id="drawerMeta" hidden></div>
+  <div id="drawerBody" hidden></div><div id="closeDrawer" hidden></div>
+  <div id="clockDate" hidden></div><div id="clockTime" hidden></div>
+  <div id="chinaMap" hidden></div><div id="branchSearch" hidden></div><div id="branchSearchBtn" hidden></div>
+  <div id="branchSearchDrop" hidden></div><div id="industrySelect" hidden></div>
+  <div id="gapList" hidden></div><div id="perfList" hidden></div><div id="daysLeft" hidden></div>
+  <div id="policyModal" hidden></div>
+
+  <script src="../data/mock.js"></script>
+  <script src="../data/chains.js"></script>
+  <script src="../data/agent-report.js"></script>
+  <script src="../cmb-task3-dashboard/assets/js/sample-data.js"></script>
+  <script src="js/stock.js"></script>
+</body>
+</html>

@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>寻香·性格测试 | Core Triad Scent Test</title>
+    <!-- 引入高级原版字体，确保所有设备不降级渲染 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+        rel="stylesheet">
+    <style>
+        /* 核心视觉变量：高阶沙龙香极简风 */
+        :root {
+            --bg-color: #Fdfaf4;
+            /* 更加温暖、明亮的法式奶油米黄色 */
+            --text-main: #1a1a1a;
+            /* 极深的炭黑色 */
+            --text-muted: #888888;
+            /* 优雅的辅助灰 */
+            --accent-color: #2c2c2c;
+            /* 核心交互色 */
+            --border-light: #e0e0e0;
+            /* 字体升级：西文/数字主力衬线体 + 中文主力衬线体，彻底告别降级宋体 */
+            --font-serif: "Playfair Display", "Noto Serif SC", "Georgia", "Times New Roman", serif;
+            --font-sans: "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1.6;
+            touch-action: manipulation;
+            transition: background 1.5s ease-in-out;
+            /* 增加光晕浮现的丝滑过渡 */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            background: transparent;
+            /* 核心：去除纯色遮挡，透出底层的动态光晕 */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 30px;
+            overflow-x: hidden;
+        }
+
+        /* 屏幕切换动画 */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex-grow: 1;
+            animation: fadeUpIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeUpIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 标题与排版 (杂志风黄金分割) */
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 85px;
+            /* 去除线条，将底部留白大幅拉长到 85px，营造出美术馆般的极致空旷 */
+        }
+
+        .description {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin-bottom: 75px;
+            padding: 0 15px;
+            line-height: 1.8;
+            letter-spacing: 1px;
+        }
+
+        /* 开始页整体内容组群下沉，留出光晕空间 */
+        .start-content-group {
+            margin-top: 12vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 顶级流体光晕融合特效 (Fluid Gradient Blur) */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            transition: opacity 1.5s ease;
+        }
+
+        .color-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            /* 稍微收紧模糊度，让颜色保留核心形态不至于散掉 */
+            -webkit-filter: blur(80px);
+            opacity: 0.8;
+            /* 提高透明度，彻底拒绝发灰 */
+            animation-iteration-count: infinite;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            animation-direction: alternate;
+            transform: translateZ(0);
+            /* 开启GPU硬件加速，极大提升低端机丝滑度 */
+            will-change: transform;
+        }
+
+        /* 落日蜜桃 (提供明亮温暖的主基调) */
+        .blob-1 {
+            width: 60vw;
+            height: 60vw;
+            background: rgba(250, 204, 161, 0.85);
+            top: -10%;
+            left: -10%;
+            animation-name: blobMove1;
+            animation-duration: 16s;
+        }
+
+        /* 清透雾霾蓝 (提供静谧、高智感的冷色对比) */
+        .blob-2 {
+            width: 65vw;
+            height: 65vw;
+            background: rgba(164, 198, 235, 0.8);
+            /* 调制成极其舒服的沙龙高阶蓝 */
+            bottom: -20%;
+            right: -10%;
+            animation-name: blobMove2;
+            animation-duration: 20s;
+        }
+
+        /* 柔和灰玫瑰 (增加浪漫浪漫的点缀) */
+        .blob-3 {
+            width: 55vw;
+            height: 55vw;
+            background: rgba(230, 184, 201, 0.85);
+            top: 40%;
+            left: 20%;
+            animation-name: blobMove3;
+            animation-duration: 24s;
+        }
+
+        /* 夸张呼吸感动画：大幅提高 scale 和 translate 的跨度 */
+        @keyframes blobMove1 {
+            0% {
+                transform: translate(0, 0) scale(0.8) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(35vw, 25vh) scale(1.4) rotate(90deg);
+            }
+
+            100% {
+                transform: translate(-10vw, 45vh) scale(0.9) rotate(180deg);
+            }
+        }
+
+        @keyframes blobMove2 {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(-45vw, -35vh) scale(1.45) rotate(-90deg);
+            }
+
+            100% {
+                transform: translate(25vw, -10vh) scale(0.8) rotate(-180deg);
+            }
+        }
+
+        @keyframes blobMove3 {
+            0% {
+                transform: translate(0, 0) scale(0.9) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(-35vw, 35vh) scale(1.5) rotate(120deg);
+            }
+
+            100% {
+                transform: translate(45vw, -25vh) scale(0.85) rotate(240deg);
+            }
+        }
+
+        /* 基础按钮组件（加深移动端对比度，呈现微霜白卡片质感） */
+        .btn {
+            background: rgba(255, 255, 255, 0.65);
+            /* 核心修改：增加霜白底色，在米黄背景上彻底脱颖而出 */
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            /* 稍微加深边框线条 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            /* 增加极其微弱的浮雕阴影，像实体卡片 */
+            color: var(--text-main);
+            padding: 18px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+            margin-bottom: 15px;
+            width: 100%;
+            position: relative;
+            border-radius: 8px;
+            /* 圆角增加一点，手感更柔和 */
+            overflow: hidden;
+            /* 必须 hidden，将水波涟漪限制在按钮内部 */
+            z-index: 1;
+        }
+
+        /* 选项按钮专属特效 */
+        #options-container .btn {
+            display: flex;
+            align-items: center;
+        }
+
+        /* 悬停时的左侧生长线 */
+        #options-container .btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            /* 稍微加粗一点点悬停线，移动端更易感知 */
+            height: 0%;
+            background: var(--opt-color, var(--text-main));
+            transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+            opacity: 0;
+            border-radius: 0 4px 4px 0;
+            z-index: 2;
+        }
+
+        #options-container .btn:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        #options-container .btn:hover::before {
+            height: 60%;
+            opacity: 1;
+        }
+
+        /* 选中时：专属色彩从左侧如“香水滴入水中”般呈圆形涟漪绽放 */
+        #options-container .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: var(--opt-color, var(--text-main));
+            z-index: -1;
+            /* 核心特效：用 clip-path 切出一个极小的圆点作为爆点 */
+            clip-path: circle(0% at 0% 50%);
+            -webkit-clip-path: circle(0% at 0% 50%);
+            transition: clip-path 0.55s cubic-bezier(0.4, 0, 0.2, 1), -webkit-clip-path 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.35;
+        }
+
+        #options-container .btn.selected {
+            background: transparent;
+            /* 核心：点中时瞬间抽干白色底色，让后面的水彩涟漪透出来 */
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transform: scale(0.98);
+            color: var(--text-main);
+        }
+
+        #options-container .btn.selected::after {
+            /* 触发涟漪绽放特效：圆形瞬间膨胀包裹整个选项卡 */
+            clip-path: circle(150% at 0% 50%);
+            -webkit-clip-path: circle(150% at 0% 50%);
+        }
+
+        .btn-primary {
+            background: var(--text-main);
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 13px;
+            border: none;
+            padding: 18px;
+            margin-top: auto;
+            display: block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            background: #333;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* 答题页特定样式 */
+        .progress-wrapper {
+            width: 100%;
+            height: 2px;
+            background: var(--border-light);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-meta {
+            font-family: var(--font-serif);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 40px;
+            min-height: 80px;
+        }
+
+        /* 加载页动画 */
+        .loader {
+            margin: auto;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-light);
+            border-top: 1px solid var(--text-main);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* === 结果页 UI 视觉升级 (毛玻璃与动态光晕适配) === */
+        .result-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .scent-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            animation: fadeUpIn 0.8s backwards;
+        }
+
+        .scent-badge {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .scent-name {
+            font-family: var(--font-serif);
+            font-size: 26px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .scent-desc {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        /* 核心香韵与代表沙龙香（极致纯净排版：同字体、同字号、仅灰度区分） */
+        .scent-perfumes {
+            font-size: 13px;
+            color: #444;
+            background: transparent;
+            padding: 22px 0 0 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            margin-top: 25px;
+            line-height: 2;
+        }
+
+        .perfume-label {
+            color: #999;
+            margin-right: 12px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .perfume-label::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 25%;
+            height: 50%;
+            width: 1px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* 标签与文案优化（高级空心线框风） */
+        .slogan {
+            font-style: italic;
+            color: #222;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* 弹窗高级感优化 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeUpIn 0.3s forwards;
+        }
+
+        .modal-box {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            width: 85%;
+            max-width: 340px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid var(--text-main);
+            font-family: var(--font-sans);
+            outline: none;
+            text-align: center;
+            font-size: 14px;
+            background: transparent;
+            border-radius: 6px;
+        }
+
+        #result-content.free-mode {
+            position: relative;
+        }
+
+        .result-card-shell {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .result-card-shell .scent-card {
+            margin-bottom: 0;
+        }
+
+        .result-card-shell.locked .scent-card {
+            filter: blur(10px);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .locked-card-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(253, 250, 244, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+        }
+
+        .locked-card-copy {
+            padding: 12px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.78);
+            color: #333;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .unlock-panel {
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.88);
+            border-radius: 12px;
+            padding: 24px 22px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+        }
+
+        .unlock-title {
+            font-family: var(--font-serif);
+            font-size: 22px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .unlock-desc {
+            font-size: 13px;
+            color: #4b4b4b;
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .session-chip {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .unlock-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .unlock-primary,
+        .unlock-secondary {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .unlock-primary {
+            background: #1f1f1f;
+            color: #fff;
+        }
+
+        .unlock-primary:hover {
+            background: #2d2d2d;
+            transform: translateY(-1px);
+        }
+
+        .unlock-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .unlock-secondary:hover {
+            background: #fff;
+        }
+
+        .unlock-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+            font-size: 13px;
+            font-family: var(--font-sans);
+        }
+
+        .unlock-help {
+            margin-top: 12px;
+            color: #7a7a7a;
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .unlock-status {
+            margin-top: 14px;
+            min-height: 20px;
+            color: #5e5e5e;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* === 隐藏的高清海报画布 (1080x1920 顶级沙龙香打印卡片排版) === */
+        /* 核心修复：坚决不能用 opacity: 0，直接移出屏幕外 */
+        .poster-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            z-index: -1;
+        }
+
+        .poster-container {
+            width: 1080px;
+            height: 1920px;
+            color: var(--text-main);
+            padding: 80px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-sans);
+            position: relative;
+        }
+
+        /* 增加海报高级感全局内边框 */
+        .poster-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            right: 40px;
+            bottom: 40px;
+            border: 2px solid rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            border-radius: 20px;
+        }
+
+        .poster-header {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 70px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.8);
+            padding-bottom: 60px;
+        }
+
+        .poster-title {
+            font-family: var(--font-serif);
+            font-size: 75px;
+            font-weight: 600;
+            letter-spacing: 12px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .poster-subtitle {
+            font-size: 26px;
+            letter-spacing: 24px;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        .poster-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            padding: 0 40px;
+        }
+
+        /* 半透明的毛玻璃底纹卡片 */
+        .poster-card {
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            padding: 45px 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .poster-badge {
+            font-size: 22px;
+            color: #666;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-family: var(--font-serif);
+            font-style: italic;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .poster-name {
+            font-family: var(--font-serif);
+            font-size: 75px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #1a1a1a;
+        }
+
+        .poster-slogan {
+            font-size: 36px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .poster-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            padding: 50px 40px 0;
+            border-top: 2px solid rgba(0, 0, 0, 0.8);
+        }
+
+        .poster-signature {
+            font-family: var(--font-serif);
+            font-size: 45px;
+            font-weight: bold;
+            font-style: italic;
+            line-height: 1.4;
+            color: #1a1a1a;
+        }
+
+        .poster-qrcode-area {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .poster-scan-text {
+            font-size: 26px;
+            color: #555;
+            letter-spacing: 2px;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        #qrcode-canvas {
+            width: 150px;
+            height: 150px;
+            background: #fff;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+        }
+
+        #qrcode-canvas img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+    <div class="ambient-bg" id="ambient-bg">
+        <div class="color-blob blob-1"></div>
+        <div class="color-blob blob-2"></div>
+        <div class="color-blob blob-3"></div>
+    </div>
+
+    <div class="container" style="z-index: 1;">
+        <div id="start-screen" class="screen active">
+            <div class="start-content-group">
+                <h1>你的专属灵魂香调测试</h1>
+                <div class="subtitle">Your Soul Scent Profile</div>
+                <div class="description">
+                    香水是灵魂最诚实的镜子<br>
+                    通过36道潜意识选择题<br>
+                    从20余种高阶香调中<br>
+                    寻得属于你的三维香氛底色
+                </div>
+                <button class="btn btn-primary" style="width: 100%; max-width: 260px;"
+                    onclick="startTest()">开始寻香探索</button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="progress-wrapper">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="question-meta" id="question-counter">Question 01 / 36</div>
+            <div class="question-text" id="question-text">问题加载中...</div>
+            <div id="options-container">
+            </div>
+        </div>
+
+        <div id="loading-screen" class="screen" style="justify-content: center; text-align: center;">
+            <div class="loader"></div>
+            <div style="margin-top: 30px; font-family: var(--font-serif); font-size: 18px;">调香中...</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px; letter-spacing: 1px;">正在为您解构潜意识嗅觉矩阵
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-intro">
+                <h1>你的专属三维底色</h1>
+                <div class="subtitle">Your Signature Scent Profile</div>
+            </div>
+            <div id="result-content" style="margin-bottom: 40px;">
+            </div>
+            <button id="poster-share-btn" class="btn btn-primary" style="margin-bottom: 15px; background: #333;"
+                onclick="openModal()">生成我的高清专业分享卡片</button>
+            <button class="btn" style="text-align: center;" onclick="resetExperience()">重新探索</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="download-modal">
+        <div class="modal-box">
+            <div class="modal-close" onclick="closeModal()">×</div>
+            <h3 style="font-family: var(--font-serif); margin-bottom: 10px;">专属香氛档案</h3>
+            <p style="font-size: 12px; color: var(--text-muted);">输入您的昵称，免费生成高清专属海报</p>
+            <input type="text" id="user-name-input" class="modal-input" placeholder="请输入您的昵称" maxlength="15">
+            <button class="btn btn-primary" id="gen-btn" style="width: 100%; padding: 14px;"
+                onclick="generatePoster()">确认生成并下载</button>
+        </div>
+    </div>
+
+    <div class="poster-wrapper">
+        <div class="poster-container" id="poster-canvas">
+            <div class="poster-header">
+                <div class="poster-title" id="poster-title-text">灵魂香调测试</div>
+                <div class="poster-subtitle">Signature Scent Profile</div>
+            </div>
+            <div class="poster-content" id="poster-content-area">
+            </div>
+            <div class="poster-footer">
+                <div class="poster-signature">Scent Profile of <br><span id="poster-sig-name"
+                        style="color: #1a1a1a;"></span></div>
+                <div class="poster-qrcode-area">
+                    <div class="poster-scan-text">扫码探索你的<br>灵魂底色 ➔</div>
+                    <div id="qrcode-canvas"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 第二部分：底层配置与结果库（请在此处拼接）
+        // ==========================================
+        // 1. 定义 21 个核心香调维度的常量标识
+        const DIMENSIONS = {
+            CITRUS: 'citrus',           // 柑橘调
+            FLORAL: 'floral',           // 花香调
+            POWDERY: 'powdery',         // 粉香调
+            GREEN: 'green',             // 绿叶调
+            FOUGERE: 'fougere',         // 馥奇调
+            TEA: 'tea',                 // 茶香调
+            AMBER: 'amber',             // 琥珀调
+            SPICY: 'spicy',             // 辛香调
+            SMOKY: 'smoky',             // 烟熏调
+            WOODY: 'woody',             // 木质调
+            OUD: 'oud',                 // 沉香木质调
+            CHYPRE: 'chypre',           // 西普调
+            LEATHER: 'leather',         // 皮革调
+            FRUITY: 'fruity',           // 果香调
+            GOURMAND: 'gourmand',       // 美食调
+            BOOZY: 'boozy',             // 酒香调
+            AQUATIC: 'aquatic',         // 水生调
+            MARINE: 'marine',           // 海洋调
+            MINERAL: 'mineral',         // 矿物调
+            SOLAR: 'solar',             // 日光调
+            SKIN: 'skin'                // 肤香调
+        };
+
+        // 3. 定义 21种香调专属光晕色彩配方 (用于动态生成背景)
+        const SCENT_COLORS = {
+            [DIMENSIONS.CITRUS]: 'rgba(255, 223, 102, 0.6)', // 暖黄
+            [DIMENSIONS.FLORAL]: 'rgba(250, 218, 221, 0.6)', // 柔粉
+            [DIMENSIONS.POWDERY]: 'rgba(234, 230, 240, 0.6)', // 藕灰紫
+            [DIMENSIONS.GREEN]: 'rgba(212, 234, 200, 0.6)',  // 浅草绿
+            [DIMENSIONS.FOUGERE]: 'rgba(200, 214, 229, 0.6)', // 清冷蓝灰
+            [DIMENSIONS.TEA]: 'rgba(226, 229, 204, 0.6)',    // 抹茶色
+            [DIMENSIONS.AMBER]: 'rgba(253, 232, 196, 0.6)',  // 琥珀金
+            [DIMENSIONS.SPICY]: 'rgba(249, 216, 214, 0.6)',  // 暖砖红
+            [DIMENSIONS.SMOKY]: 'rgba(209, 209, 209, 0.6)',  // 烟雾灰
+            [DIMENSIONS.WOODY]: 'rgba(230, 222, 213, 0.6)',  // 枯木棕
+            [DIMENSIONS.OUD]: 'rgba(207, 193, 177, 0.6)',    // 沉香褐
+            [DIMENSIONS.CHYPRE]: 'rgba(209, 224, 215, 0.6)',  // 西普绿
+            [DIMENSIONS.LEATHER]: 'rgba(226, 212, 199, 0.6)', // 软绒皮
+            [DIMENSIONS.FRUITY]: 'rgba(255, 221, 226, 0.6)',  // 蜜桃粉
+            [DIMENSIONS.GOURMAND]: 'rgba(245, 230, 211, 0.6)',// 焦糖奶油
+            [DIMENSIONS.BOOZY]: 'rgba(238, 218, 203, 0.6)',   // 朗姆酒
+            [DIMENSIONS.AQUATIC]: 'rgba(214, 234, 248, 0.6)', // 冰川蓝
+            [DIMENSIONS.MARINE]: 'rgba(194, 224, 249, 0.6)',  // 深海蓝
+            [DIMENSIONS.MINERAL]: 'rgba(224, 228, 229, 0.6)', // 矿石灰
+            [DIMENSIONS.SOLAR]: 'rgba(255, 249, 196, 0.6)',   // 灿烂阳光
+            [DIMENSIONS.SKIN]: 'rgba(253, 251, 247, 0.6)'     // 纯净肤白
+        };
+
+        // 初始化计分板
+        const API_BASE = '';
+        const STORAGE_KEYS = {
+            progressScores: 'perfume_test_scores',
+            progressCurrent: 'perfume_test_current',
+            pendingSession: 'perfume_pending_session',
+            pendingResult: 'perfume_pending_result',
+            unlockedSession: 'perfume_unlocked_session',
+            mockSessions: 'perfume_mock_sessions'
+        };
+
+        const CHANNEL_CONFIG = {
+            xhs: {
+                label: '小红书',
+                storeName: '你的小红书店铺名',
+                searchKeyword: '你的小红书搜索词',
+                productUrl: '',
+                previewUnlockCode: 'XHS-DEMO-2026'
+            },
+            dy: {
+                label: '抖音',
+                storeName: '你的抖音店铺名',
+                searchKeyword: '你的抖音搜索词',
+                productUrl: '',
+                previewUnlockCode: 'DY-DEMO-2026'
+            },
+            ks: {
+                label: '快手',
+                storeName: '你的快手店铺名',
+                searchKeyword: '你的快手搜索词',
+                productUrl: '',
+                previewUnlockCode: 'KS-DEMO-2026'
+            },
+            direct: {
+                label: '官网',
+                storeName: '寻香测试',
+                searchKeyword: '寻香测试',
+                productUrl: '',
+                previewUnlockCode: 'DIRECT-DEMO-2026'
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const CURRENT_CHANNEL = getChannelFromUrl();
+        const CURRENT_MODE = getModeFromUrl();
+        const INITIAL_UNLOCK_CODE = (urlParams.get('unlock_code') || '').trim();
+        const INITIAL_SESSION_ID = (urlParams.get('session_id') || '').trim();
+        const INITIAL_SESSION_CODE = (urlParams.get('session_code') || '').trim();
+
+        let scores = {};
+        Object.values(DIMENSIONS).forEach(dim => scores[dim] = 0);
+
+        // 2. 21维终极香调文案结果库 (轻奢沙龙商业版)
+        const resultDetails = {
+            [DIMENSIONS.CITRUS]: {
+                name: "柑橘调",
+                slogan: "像一颗刚刚切开的鲜橙般明亮直率",
+                tags: ["#元气明媚", "#极简坦荡", "#不拖泥带水"],
+                desc: "<b>元气、直率、极简。</b><br>高挥发性的酸甜多汁，明亮且极具穿透力的果皮清香。你充满生命力，拒绝拐弯抹角，纯粹且乐观。",
+                materials: "香柠檬、西柚、血橙、苦橙叶、马鞭草",
+                perfumes: "阿特金森 无根之水 / 帕尔玛之水 桃金娘加州桂 / 欧珑 赤霞橘光 / 蒂普提克 东京柑橘"
+            },
+            [DIMENSIONS.FLORAL]: {
+                name: "花香调",
+                slogan: "繁花盛开的丰沛，温柔且坚定",
+                tags: ["#极致浪漫", "#共情力", "#社交魅力"],
+                desc: "<b>优雅、社交、感性。</b><br>高度还原花朵的丰沛芬芳，层次丰富饱满。你共情力强，追求极致浪漫，外表柔和内里坚韧。",
+                materials: "玫瑰、茉莉、晚香玉、依兰、橙花",
+                perfumes: "拜里朵 无人区玫瑰 / 蒂普提克 杜桑 / 潘海利根 月亮女神 / 阿蒂仙之香 寻找蝴蝶"
+            },
+            [DIMENSIONS.POWDERY]: {
+                name: "粉香调",
+                slogan: "老钱风的得体，带着时光沉淀的温柔",
+                tags: ["#克制温柔", "#老钱风", "#绝对安全感"],
+                desc: "<b>经典、温柔、克制。</b><br>带有明显且高级的皂感、脂粉感与复古气息。你带有一种老钱风的得体感，让人感到舒适与妥帖。",
+                materials: "醛香、鸢尾根、紫罗兰、天芥菜",
+                perfumes: "普拉达 鸢尾轻芳 / 香奈儿 5号 / 娇兰 阵雨之后 / 罗意威 001 事后清晨女款"
+            },
+            [DIMENSIONS.GREEN]: {
+                name: "绿叶调",
+                slogan: "揉碎的绿叶，清醒、独立、不随波逐流",
+                tags: ["#清冷独立", "#生涩真诚", "#人间清醒"],
+                desc: "<b>清脆、活力、中性。</b><br>刚修剪过的草坪、折断的树枝带来的生涩感。你不随波逐流，保有大自然般的生涩、真诚与清醒。",
+                materials: "白松香、无花果叶、番茄叶、常春藤、紫罗兰叶",
+                perfumes: "蒂普提克 希腊无花果 / 阿蒂仙之香 狂恋苦艾 / 香奈儿 19号 / 爱马仕 屋顶花园"
+            },
+            [DIMENSIONS.FOUGERE]: {
+                name: "馥奇调",
+                slogan: "一丝不苟的洁净感，精英专属的秩序",
+                tags: ["#秩序控", "#理智干练", "#精英气场"],
+                desc: "<b>洁净、绅士、干练。</b><br>经典的理发店气息，带有冰冷草本与洁净剃须水感。你追求秩序与掌控感，做事雷厉风行，极具精英气质。",
+                materials: "薰衣草、橡木苔、香豆素、天竺葵、快乐鼠尾草",
+                perfumes: "罗意威 黑色圆舞曲 / 潘海利根 牧羊少年 / 汤姆·福特 绝黑 / 帕尔玛之水 黑调"
+            },
+            [DIMENSIONS.TEA]: {
+                name: "茶香调",
+                slogan: "微苦回甘的禅意，与世无争的松弛",
+                tags: ["#松弛感", "#内观禅意", "#精神富足"],
+                desc: "<b>禅意、内观、松弛。</b><br>清透、微苦回甘的意境香，带有焙烤的植物气息。你仿佛带着书卷气的智者，追求内心平静，与世无争。",
+                materials: "绿茶、白茶、马黛茶、红茶、愈创木",
+                perfumes: "宝格丽 大吉岭茶 / 勒莱柏 黑茶 29 / 阿玛尼 玉龙茶香 / 欧珑 无极乌龙"
+            },
+            [DIMENSIONS.AMBER]: {
+                name: "琥珀调",
+                slogan: "华丽深邃的脂香，充满危险的迷人魅力",
+                tags: ["#气场全开", "#异域风情", "#感官极致"],
+                desc: "<b>华丽、异域、丰沛。</b><br>温暖、醇厚，由珍贵树脂与香草交织出的浓郁脂香。你极具气场与性感魅力，性格热烈，追求极致感官。",
+                materials: "琥珀、香草、劳丹脂、安息香脂",
+                perfumes: "芦丹氏 琥珀君王 / 爱马仕 橘彩星光琥珀版 / 蒂普提克 欧珀 / 潘海利根 隐秘的克拉拉"
+            },
+            [DIMENSIONS.SPICY]: {
+                name: "辛香调",
+                slogan: "打破规则的野心，热烈且充满张力",
+                tags: ["#野心家", "#打破常规", "#致命吸引力"],
+                desc: "<b>刺激、冒险、锋芒。</b><br>带有热烈、刺鼻或温热感的香料气息，极具嗅觉冲击力。你充满张力与野心，喜欢挑战规则，带有危险的吸引力。",
+                materials: "黑胡椒、肉桂、小豆蔻、藏红花、丁香",
+                perfumes: "爱马仕 远洋 / 芦丹氏 柏林少女 / 蒂普提克 34号 / 祖玛珑 黑石榴"
+            },
+            [DIMENSIONS.SMOKY]: {
+                name: "烟熏调",
+                slogan: "神圣的干涩烟雾，深邃且孤高的精神世界",
+                tags: ["#孤高深邃", "#向内探索", "#神秘主义"],
+                desc: "<b>神秘、冥想、暗黑。</b><br>神圣的烟雾感，带有干燥木材燃烧的神秘干涩气息。你喜欢向内探索，拥有深邃、孤高且极简的精神世界。",
+                materials: "乳香、烟草、焚香、桦木焦油、没药",
+                perfumes: "阿蒂仙之香 冥府之路 / 芦丹氏 孤女 / 罗意威 7号 / 潘海利根 乔治勋爵的悲剧"
+            },
+            [DIMENSIONS.WOODY]: {
+                name: "木质调",
+                slogan: "像扎根大地的老树般沉稳可靠",
+                tags: ["#沉稳可靠", "#绝对理智", "#避风港"],
+                desc: "<b>沉稳、可靠、理性。</b><br>纯粹的木材刨花、干燥森林与陈旧原木家具的沉稳气息。你像扎根大地的老树，拥有独立世界观，给人极强信赖感。",
+                materials: "檀香、香根草、雪松、桧木",
+                perfumes: "蒂普提克 檀道 / 拜里朵 超级雪松 / 勒莱柏 檀香木 33 / 爱马仕 大地"
+            },
+            [DIMENSIONS.OUD]: {
+                name: "沉香木质调",
+                slogan: "不容置疑的上位者，充满阅历的压迫感",
+                tags: ["#掌控者", "#厚重阅历", "#降维打击"],
+                desc: "<b>强大、阅历、气场。</b><br>深邃、厚重，带有微酸与浓烈异域木质的侵略性。你是不容置疑的掌控者，历经风浪，气场极具压迫感。",
+                materials: "沉香(乌木)、广藿香、藏红花、莎草",
+                perfumes: "汤姆·福特 珍华乌木 / 祖玛珑 乌木与佛手柑 / 帕尔玛之水 沉香 / 潘海利根 猎犬"
+            },
+            [DIMENSIONS.CHYPRE]: {
+                name: "西普调",
+                slogan: "孤冷华丽的矛盾体，清醒且优雅",
+                tags: ["#清冷孤傲", "#智性恋", "#优雅降维"],
+                desc: "<b>高级、冷艳、孤高。</b><br>湿润泥土结合清新柑橘与深沉木质，层次极其华丽复杂。你兼具清爽与深沉的矛盾体，不讨好任何人，清醒且优雅。",
+                materials: "佛手柑、橡木苔、劳丹脂、广藿香、玫瑰",
+                perfumes: "蒂普提克 资本之都 / 香奈儿 可可小姐 / 迪奥 蒙田大道 / 阿蒂仙之香 小偷玫瑰"
+            },
+            [DIMENSIONS.LEATHER]: {
+                name: "皮革调",
+                slogan: "带有生人勿近的距离感与叛逆野性",
+                tags: ["#边界感", "#叛逆野性", "#生人勿近"],
+                desc: "<b>掌控、叛逆、野性。</b><br>干燥、烟熏或奢华皮具沙发的硬核气息，极具辨识度。你打破常规，具有强烈的个人边界与生人勿近的距离感。",
+                materials: "皮革、桦木焦油、藏红花、海狸香、绒面革",
+                perfumes: "汤姆·福特 奢黑皮革 / 拜里朵 黑色藏红花 / 爱马仕 凯莉驿马车 / 帕尔玛之水 皮革"
+            },
+            [DIMENSIONS.FRUITY]: {
+                name: "果香调",
+                slogan: "饱满多汁的明媚，人群中耀眼的开心果",
+                tags: ["#甜美娇俏", "#亲和力满分", "#乐观小太阳"],
+                desc: "<b>甜美、娇俏、活泼。</b><br>熟透的热带水果、甜度较高的非柑橘类浆果，饱满多汁。你天生具有极强亲和力，乐观明媚，是人群中的开心果。",
+                materials: "黑莓、樱桃、桃子、李子、无花果",
+                perfumes: "祖玛珑 英国梨与小苍兰 / 阿蒂仙之香 黑莓缪斯 / 拜里朵 果园 / 蒂普提克 水中影"
+            },
+            [DIMENSIONS.GOURMAND]: {
+                name: "美食调",
+                slogan: "能融化坚冰的治愈，像热红茶般温暖",
+                tags: ["#治愈系", "#童真纯粹", "#极致安全感"],
+                desc: "<b>童真、治愈、安全感。</b><br>高度模拟高级甜点、糖果或糖浆的香气，散发极致治愈感。你内心纯粹，懂得照顾他人，能像热红茶般融化坚冰。",
+                materials: "焦糖、香草、果仁糖、黑巧克力、杏仁",
+                perfumes: "梅森马吉拉 咖啡歇息 / 芦丹氏 香子兰木 / 普拉达 糖果 / 蒂普提克 杜耶尔"
+            },
+            [DIMENSIONS.BOOZY]: {
+                name: "酒香调",
+                slogan: "带有成年人复杂阅历的微醺魅力",
+                tags: ["#微醺迷人", "#游刃有余", "#故事感"],
+                desc: "<b>成熟、克制、微醺。</b><br>奶香、烈酒发酵感与咸味的交织，少糖且极具层次的成年气味。你懂得享受生活，带有成年人的复杂阅历与迷人魅力。",
+                materials: "朗姆酒、干邑白兰地、威士忌、橡木桶、苦咖啡",
+                perfumes: "潘海利根 琴酒 / 梅森马吉拉 爵士酒廊 / 阿特金森 海盗的珍藏 / 祖玛珑 威士忌与雪松木"
+            },
+            [DIMENSIONS.AQUATIC]: {
+                name: "水生调",
+                slogan: "一场剥离世俗情绪的极寒冷雨",
+                tags: ["#极简清透", "#绝对自由", "#出尘不染"],
+                desc: "<b>清冷、出尘、内敛。</b><br>晨露、淡水、冷泉与雨后空气的透明感，带有极寒的穿透力。你看待事物通透淡然，追求不受世俗羁绊的绝对自由。",
+                materials: "西瓜酮、睡莲、雨后泥土、黄瓜、莲花",
+                perfumes: "祖玛珑 蓝风铃 / 爱马仕 尼罗河花园 / 梅森马吉拉 航海物语 / 三宅一生 一生之水"
+            },
+            [DIMENSIONS.MARINE]: {
+                name: "海洋调",
+                slogan: "旷野的狂风，代表不被规训的生命力",
+                tags: ["#旷野自由", "#生命力", "#探索欲"],
+                desc: "<b>旷野、力量、狂放。</b><br>海水、咸风、海浪拍打礁石与浮木的粗犷感，带有矿物咸腥。你代表着不被规训的生命力与向外探索的野心，热爱冒险。",
+                materials: "海盐、海藻、龙涎香、浮木、海茴香",
+                perfumes: "祖玛珑 鼠尾草与海盐 / 宝格丽 海蓝 / 汤姆·福特 蔚蓝海岸 / 阿蒂仙之香 狂暴海湾"
+            },
+            [DIMENSIONS.MINERAL]: {
+                name: "矿物调",
+                slogan: "极度冷感的无机物，像一台精密仪器",
+                tags: ["#极简冷酷", "#禁欲系", "#客观理智"],
+                desc: "<b>极简、高冷、禁欲。</b><br>岩石、墨水、金属或潮湿混凝土的无机物气息，极度冷感。你追求极致的客观与冷酷，像一台精密仪器，不表露情绪。",
+                materials: "降龙涎香醚、打火石、潮湿混凝土、热沙、金属感",
+                perfumes: "爱马仕 大地 / 梅森马吉拉 雨后初晴 / 蒂普提克 纸香之水 / 勒莱柏 树苔 9"
+            },
+            [DIMENSIONS.SOLAR]: {
+                name: "日光调",
+                slogan: "驱散阴霾的温暖，毫无压力的慵懒度假感",
+                tags: ["#慵懒松弛", "#海岛度假", "#治愈暖阳"],
+                desc: "<b>度假、明亮、松弛。</b><br>阳光烘烤沙滩的微热感，带有度假海岛的热带花朵气息。你拥有驱散阴霾的温暖力量，追求毫无压力的慵懒生活。",
+                materials: "提亚蕾花、依兰、椰子、赤素馨花、香草",
+                perfumes: "汤姆·福特 阳光琥珀 / 梅森马吉拉 沙滩漫步 / 罗意威 滨海假日 / 帕尔玛之水 卡普里岛橙"
+            },
+            [DIMENSIONS.SKIN]: {
+                name: "肤香调",
+                slogan: "宛若天生的体温，Less is More 的最高境界",
+                tags: ["#伪体香", "#Less is More", "#真实坦荡"],
+                desc: "<b>亲密、纯粹、不费力。</b><br>纯棉衣物、宛若天生带有体温的微甜与刚刚沐浴后的纯净感。你崇尚“Less is More”的最高境界，真实坦荡，毫无伪装。",
+                materials: "麝香酮、黄葵籽、开司米木、降龙涎香醚、白麝香",
+                perfumes: "拜里朵 白色浪漫 / 勒莱柏 别样 13 / 梅森马吉拉 慵懒周末 / 蒂普提克 肌肤之花"
+            }
+        };
+        // 3. 核心题库数据 (全新生活方式与感官平权版：1-36 题)
+        const questions = [
+            // === 第一阶段：日常感官与生活美学 ===
+            {
+                id: 1,
+                question: "周末清晨的理想唤醒方式？",
+                options: [
+                    { text: "拉开窗帘，切开一颗汁水四溢的鲜橙", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "裹在刚洗过、带有阳光味道的纯棉被子里", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.FLORAL]: 1 } },
+                    { text: "伴随着手冲黑咖啡的微苦焦香慢慢醒来", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.BOOZY]: 2, [DIMENSIONS.SMOKY]: 1, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "推开窗，深呼吸雨后带着泥土气息的湿润空气", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.MINERAL]: 1, [DIMENSIONS.MARINE]: 1 } }
+                ]
+            },
+            {
+                id: 2,
+                question: "如果你的衣橱只能留下一种核心穿搭质感，你会选择？",
+                options: [
+                    { text: "极简的纯白纯棉 T恤 与干净的水洗牛仔裤", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.AQUATIC]: 1 } },
+                    { text: "剪裁极其利落、一丝不苟的定制西装或风衣", scores: { [DIMENSIONS.FOUGERE]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.CHYPRE]: 1, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "柔软、慵懒且有厚重包裹感的羊绒毛衣", scores: { [DIMENSIONS.POWDERY]: 3, [DIMENSIONS.GOURMAND]: 2, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "带有金属配件、硬朗锋利的复古机车皮衣", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.OUD]: 1, [DIMENSIONS.MINERAL]: 1 } }
+                ]
+            },
+            {
+                id: 3,
+                question: "抛开提神需求，你最偏爱的日常饮品风味是？",
+                options: [
+                    { text: "加满冰块与新鲜薄荷叶的青柠气泡水", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.MINERAL]: 1 } },
+                    { text: "经过发酵、回甘悠长且带有轻微焙烤感的乌龙茶", scores: { [DIMENSIONS.TEA]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "甜度适中、顶层铺着绵密奶泡的香草拿铁", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.BOOZY]: 1 } },
+                    { text: "带有松木香气与苦涩草本感的无酒精金汤力", scores: { [DIMENSIONS.FOUGERE]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.GREEN]: 1, [DIMENSIONS.MINERAL]: 1 } }
+                ]
+            },
+            {
+                id: 4,
+                question: "走进一家高级精品店，哪种空间香氛最能让你产生好感？",
+                options: [
+                    { text: "充满盛开白花（茉莉/晚香玉）的馥郁花园感", scores: { [DIMENSIONS.FLORAL]: 3, [DIMENSIONS.GREEN]: 1, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "干燥、沉静，像高级实木家具陈列室的气息", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.OUD]: 2, [DIMENSIONS.SMOKY]: 1, [DIMENSIONS.LEATHER]: 1 } },
+                    { text: "温暖、甜蜜，仿佛隔壁有一家法式烘焙坊", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "极其冷淡，仿佛没有气味的冷气与大理石气息", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.AQUATIC]: 2, [DIMENSIONS.FOUGERE]: 1 } }
+                ]
+            },
+            {
+                id: 5,
+                question: "在挑选个人护理产品（如沐浴露/身体乳）时，你的首选是？",
+                options: [
+                    { text: "剥开大颗西柚般、酸甜清爽、不拖泥带水的气味", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "刚刚碾碎的植物根茎与生涩的绿叶汁水", scores: { [DIMENSIONS.GREEN]: 3, [DIMENSIONS.TEA]: 2, [DIMENSIONS.AQUATIC]: 1 } },
+                    { text: "充满异域风情、温暖浓郁的琥珀或树脂脂香", scores: { [DIMENSIONS.AMBER]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.OUD]: 1 } },
+                    { text: "仿佛什么都没涂的洁净微甜皂感", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.FLORAL]: 1 } }
+                ]
+            },
+            {
+                id: 6,
+                question: "哪种色彩组合最能代表你日常散发的气场？",
+                options: [
+                    { text: "明媚亮眼的柠檬黄、浅海蓝与薄荷绿", scores: { [DIMENSIONS.SOLAR]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.AQUATIC]: 1, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "经典克制的高级灰、纯黑与冷白色", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.CHYPRE]: 2, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "温柔治愈的燕麦色、奶茶色与干枯玫瑰粉", scores: { [DIMENSIONS.POWDERY]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.FLORAL]: 1, [DIMENSIONS.GOURMAND]: 1 } },
+                    { text: "浓郁深邃的酒红、墨绿与暗金色", scores: { [DIMENSIONS.AMBER]: 3, [DIMENSIONS.OUD]: 2, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.SMOKY]: 1, [DIMENSIONS.BOOZY]: 1 } }
+                ]
+            },
+            {
+                id: 7,
+                question: "你的理想办公或独处创作空间是什么样的？",
+                options: [
+                    { text: "有全景落地窗，光线绝对通透的极简开阔空间", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.CITRUS]: 1, [DIMENSIONS.AQUATIC]: 1 } },
+                    { text: "摆满绿植，有自然微风吹过的实木长桌", scores: { [DIMENSIONS.GREEN]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.TEA]: 2, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "光线微暗，有复古皮椅和被翻旧的纸质笔记本", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.OUD]: 1, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "铺着厚重地毯，点着香薰蜡烛的私密角落", scores: { [DIMENSIONS.AMBER]: 3, [DIMENSIONS.GOURMAND]: 2, [DIMENSIONS.BOOZY]: 2, [DIMENSIONS.FLORAL]: 1 } }
+                ]
+            },
+            {
+                id: 8,
+                question: "度过了一个极其消耗精力的工作周，你的“回血”方式是？",
+                options: [
+                    { text: "去户外痛快地出汗，或者去海边吹强烈的海风", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.FOUGERE]: 1, [DIMENSIONS.GREEN]: 1 } },
+                    { text: "关掉手机，在浴缸里泡澡并享受绝对的安静独处", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.TEA]: 2, [DIMENSIONS.MINERAL]: 1, [DIMENSIONS.SKIN]: 1 } },
+                    { text: "开一瓶好酒，或者去有格调的清吧微醺一场", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "约上最亲密的朋友，去吃一顿高热量的美味碳水", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.SKIN]: 1 } }
+                ]
+            },
+            {
+                id: 9,
+                question: "你在旅行中最享受的瞬间是？",
+                options: [
+                    { text: "漫无目的地在海滨小镇骑车，感受阳光直射与海风", scores: { [DIMENSIONS.SOLAR]: 3, [DIMENSIONS.MARINE]: 2, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.AQUATIC]: 1 } },
+                    { text: "迷失在充满香料、异国织物与叫卖声的当地古老集市", scores: { [DIMENSIONS.SPICY]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.OUD]: 1, [DIMENSIONS.LEATHER]: 1 } },
+                    { text: "走进一座空旷、有着几百年历史的古董教堂或寺院", scores: { [DIMENSIONS.SMOKY]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.CHYPRE]: 2, [DIMENSIONS.POWDERY]: 1 } },
+                    { text: "在视野极佳的观景台，静静俯瞰整座城市的现代天际线", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.CHYPRE]: 1 } }
+                ]
+            },
+            {
+                id: 10,
+                question: "你的社交媒体/朋友圈风格更接近于？",
+                options: [
+                    { text: "经常分享风景、美食、运动，画风明快活泼", scores: { [DIMENSIONS.FRUITY]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.GOURMAND]: 1 } },
+                    { text: "极其克制，几个月不发，或者只分享专业/工作见解", scores: { [DIMENSIONS.FOUGERE]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.CHYPRE]: 1 } },
+                    { text: "偶尔分享晦涩的歌词、小众电影截图或深夜情绪", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.OUD]: 1 } },
+                    { text: "记录日常的小确幸，充满温馨的家居与宠物日常", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.GOURMAND]: 2, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.FLORAL]: 1 } }
+                ]
+            },
+
+            // === 第二阶段：社交能量与真实自我 ===
+            {
+                id: 11,
+                question: "在团队协作或处理复杂项目时，你最引以为傲的特质是？",
+                options: [
+                    { text: "极高的执行力与直达本质、绝不绕弯子的坦率", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.MINERAL]: 1 } },
+                    { text: "敏锐的情绪洞察力，能让周围协作的人感到如沐春风", scores: { [DIMENSIONS.FLORAL]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.POWDERY]: 1 } },
+                    { text: "强大的全局掌控力，以及在危机中毫不动摇的气场", scores: { [DIMENSIONS.OUD]: 3, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.SPICY]: 1, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "像精密仪器一样剥离个人情绪、分析客观数据的理性", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.CHYPRE]: 2, [DIMENSIONS.FOUGERE]: 2 } }
+                ]
+            },
+            {
+                id: 12,
+                question: "当与他人发生意见分歧时，你的本能反应是？",
+                options: [
+                    { text: "快速表达不满，像气泡水一样炸开，但气消得也快", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "瞬间降温，用优雅但极具逻辑的话语进行降维打击", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "觉得没必要争吵，主动切断话题，退回自己的世界", scores: { [DIMENSIONS.TEA]: 3, [DIMENSIONS.AQUATIC]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.GREEN]: 1 } },
+                    { text: "展现出极强的压迫感，用绝对的实力让对方闭嘴", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.OUD]: 2, [DIMENSIONS.MARINE]: 1 } }
+                ]
+            },
+            {
+                id: 13,
+                question: "别人对你的第一印象通常是？",
+                options: [
+                    { text: "热情、好接近，像个充满能量的阳光开心果", scores: { [DIMENSIONS.FRUITY]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SOLAR]: 2 } },
+                    { text: "很有礼貌，但总带着一种不可跨越的得体距离感", scores: { [DIMENSIONS.POWDERY]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.FOUGERE]: 1, [DIMENSIONS.MINERAL]: 1 } },
+                    { text: "气场很强，眼神锐利，甚至看起来有点“不好惹”", scores: { [DIMENSIONS.SPICY]: 3, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.AMBER]: 1, [DIMENSIONS.OUD]: 1 } },
+                    { text: "沉静、内敛，像一本需要慢慢翻阅的厚重书本", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.TEA]: 2, [DIMENSIONS.SMOKY]: 1 } }
+                ]
+            },
+            {
+                id: 14,
+                question: "你在选择挚友或伴侣时，最看重对方身上的什么特质？",
+                options: [
+                    { text: "干净、纯粹，有着清澈透明、不被世俗污染的眼神", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.SKIN]: 1 } },
+                    { text: "阅历极其丰富，有着迷人的反差感，像一杯醇厚的烈酒", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.LEATHER]: 1, [DIMENSIONS.SMOKY]: 1 } },
+                    { text: "能陪我一起疯、不受任何规训、向往旷野和自由", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.CITRUS]: 1 } },
+                    { text: "情绪绝对稳定，能像避风港一样提供踏实的安全感", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.GOURMAND]: 2, [DIMENSIONS.TEA]: 1, [DIMENSIONS.POWDERY]: 1 } }
+                ]
+            },
+            {
+                id: 15,
+                question: "你最讨厌的社交场景是？",
+                options: [
+                    { text: "磨叽拖沓、不讲重点、效率极低的废话局", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.MINERAL]: 1 } },
+                    { text: "吵闹不堪、毫无个人边界感的拥挤应酬聚会", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.TEA]: 2, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.GREEN]: 1 } },
+                    { text: "沉闷、枯燥、充满条条框框和说教的例行公事", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.MARINE]: 2, [DIMENSIONS.SPICY]: 1 } },
+                    { text: "粗鄙、大呼小叫、毫无美感和体面可言的争执现场", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.FLORAL]: 1 } }
+                ]
+            },
+            {
+                id: 16,
+                question: "处理自己不为人知的“内耗或小情绪”时，你会？",
+                options: [
+                    { text: "去吃一顿高热量的欺骗餐，用甜美填满胃部", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "躲进充满安全感的被窝，睡一觉让系统重启", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.FLORAL]: 1 } },
+                    { text: "点燃一支烟或香薰，看着烟雾在黑暗中独自上升", scores: { [DIMENSIONS.SMOKY]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.CHYPRE]: 1, [DIMENSIONS.OUD]: 1 } },
+                    { text: "去开阔的地方兜风或跑步，任由风吹散思绪", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SOLAR]: 1, [DIMENSIONS.AQUATIC]: 1 } }
+                ]
+            },
+            {
+                id: 17,
+                question: "当你真正喜欢上一件事物或一个人时，你的表现更像是？",
+                options: [
+                    { text: "毫不掩饰的直球出击，明媚、热烈且行动力极强", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.FRUITY]: 2 } },
+                    { text: "极其克制，在内心百转千回，表面却装作云淡风轻", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.TEA]: 2, [DIMENSIONS.MINERAL]: 1, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "想要霸占全部，充满极强的掌控欲与排他性", scores: { [DIMENSIONS.OUD]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.SPICY]: 1 } },
+                    { text: "润物细无声地提供照顾，在意每一个微小的细节", scores: { [DIMENSIONS.FLORAL]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.POWDERY]: 1 } }
+                ]
+            },
+            {
+                id: 18,
+                question: "你的非日常消费观更偏向于为哪种体验买单？",
+                options: [
+                    { text: "为一瞬间的快乐和“我就要”的爽快感买单", scores: { [DIMENSIONS.FRUITY]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "为设计极简、材质顶级、没有明显Logo的物件买单", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.CHYPRE]: 1, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "为随着时间流逝会包浆、增值、有故事的复古物件买单", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.AMBER]: 1, [DIMENSIONS.SMOKY]: 1 } },
+                    { text: "为极致的浪漫、艺术门票或一束昂贵的鲜花买单", scores: { [DIMENSIONS.FLORAL]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.BOOZY]: 1 } }
+                ]
+            },
+            {
+                id: 19,
+                question: "在一个完全没有安排的空白周末，你通常会干什么？",
+                options: [
+                    { text: "搞一场彻底的大扫除，享受环境焕然一新的清脆感", scores: { [DIMENSIONS.GREEN]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "窝在沙发里连刷一整季剧集，旁边放着充足的零食", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "一个人去逛美术馆，或者在家泡壶茶沉浸式阅读", scores: { [DIMENSIONS.TEA]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.SMOKY]: 1 } },
+                    { text: "换上皮靴去探索城市里没去过的独立咖啡馆或清吧", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.LEATHER]: 1 } }
+                ]
+            },
+            {
+                id: 20,
+                question: "你认为成年人最高级的性感来源于？",
+                options: [
+                    { text: "刚洗完澡后，皮肤散发的干净水汽与原始的微热感", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.AQUATIC]: 2, [DIMENSIONS.POWDERY]: 1 } },
+                    { text: "漫不经心的游刃有余，以及深不见底的阅历感", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.CHYPRE]: 1 } },
+                    { text: "绝对的自律换来的挺拔身姿与一丝不苟的整洁", scores: { [DIMENSIONS.FOUGERE]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "带着一点危险气息的野性与不被驯服的自由眼神", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.MARINE]: 2, [DIMENSIONS.SPICY]: 1, [DIMENSIONS.OUD]: 1 } }
+                ]
+            },
+
+            // === 第三阶段：情绪审美与潜意识投射 ===
+            {
+                id: 21,
+                question: "理想的助眠声音或 ASMR 是什么？",
+                options: [
+                    { text: "淅淅沥沥打在芭蕉叶上的雨声", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.TEA]: 1 } },
+                    { text: "壁炉里木柴燃烧时令人安心的噼啪声", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "海浪有节奏地拍打在礁石上的白噪音", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "充满生机、清晨鸟儿微弱的鸣叫", scores: { [DIMENSIONS.SOLAR]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.FRUITY]: 1 } }
+                ]
+            },
+            {
+                id: 22,
+                question: "如果要把你的性格拍成一部电影，它的画面色调是？",
+                options: [
+                    { text: "高饱和、明亮对比、充满夏日活力的色彩", scores: { [DIMENSIONS.FRUITY]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SOLAR]: 2 } },
+                    { text: "降低饱和度、充满胶片质感的复古暖黄调", scores: { [DIMENSIONS.AMBER]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.BOOZY]: 1, [DIMENSIONS.LEATHER]: 1 } },
+                    { text: "对比度极高、锐利且冷酷的黑白青灰色调", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.FOUGERE]: 1, [DIMENSIONS.OUD]: 1 } },
+                    { text: "柔和、留白极多、宛如水墨画般的淡雅色调", scores: { [DIMENSIONS.TEA]: 3, [DIMENSIONS.AQUATIC]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.GREEN]: 1 } }
+                ]
+            },
+            {
+                id: 23,
+                question: "贴身衣物，你最无法抗拒的面料质感是？",
+                options: [
+                    { text: "洗过很多次、干爽挺括且透气的纯亚麻", scores: { [DIMENSIONS.FOUGERE]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.MINERAL]: 1, [DIMENSIONS.SKIN]: 1 } },
+                    { text: "垂坠感极佳、触感冰凉且顺滑的重磅真丝", scores: { [DIMENSIONS.FLORAL]: 3, [DIMENSIONS.AQUATIC]: 2, [DIMENSIONS.BOOZY]: 1 } },
+                    { text: "带有天然粗粝纹理、厚重且保暖的粗花呢", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.CHYPRE]: 2, [DIMENSIONS.SMOKY]: 1 } },
+                    { text: "柔软贴肤、带有细软绒毛的纯天然棉花", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.GOURMAND]: 2, [DIMENSIONS.POWDERY]: 1 } }
+                ]
+            },
+            {
+                id: 24,
+                question: "对待过去无法挽回的遗憾，你当下的态度是？",
+                options: [
+                    { text: "像风吹过不留痕，绝不内耗，只看前方", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.AQUATIC]: 1 } },
+                    { text: "封存在心底最深处的抽屉，不再触碰", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.POWDERY]: 1 } },
+                    { text: "将其酿成一杯苦涩但迷人的酒，化作自己的阅历", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.CHYPRE]: 2, [DIMENSIONS.AMBER]: 1, [DIMENSIONS.OUD]: 1 } },
+                    { text: "化作前行的锋芒，绝不重蹈覆辙", scores: { [DIMENSIONS.SPICY]: 3, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.MINERAL]: 1 } }
+                ]
+            },
+            {
+                id: 25,
+                question: "理想中的晚餐环境是？",
+                options: [
+                    { text: "露天大排档，吹着海风大口吃海鲜大口喝冰啤", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SPICY]: 1 } },
+                    { text: "灯光昏暗、需要着正装出席的高级法式餐厅", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.FLORAL]: 2, [DIMENSIONS.AMBER]: 1, [DIMENSIONS.BOOZY]: 1 } },
+                    { text: "充满生活气息、灯光温暖的家庭餐桌", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "极致安静、考验食材本味的极简高级日料吧台", scores: { [DIMENSIONS.TEA]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.AQUATIC]: 1 } }
+                ]
+            },
+            {
+                id: 26,
+                question: "最能让你驻足并感到震撼的气象景观是？",
+                options: [
+                    { text: "暴雨过后，天空放晴瞬间出现的彩虹", scores: { [DIMENSIONS.SOLAR]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.CITRUS]: 1 } },
+                    { text: "冬日清晨，推开门看到茫茫无际、毫无脚印的大雪", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.SKIN]: 1, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "雷电交加、狂风大作，极具压迫感的暴雨前夕", scores: { [DIMENSIONS.OUD]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.MARINE]: 1, [DIMENSIONS.LEATHER]: 1 } },
+                    { text: "秋日黄昏，漫山遍野枯萎但热烈的红叶", scores: { [DIMENSIONS.AMBER]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.SMOKY]: 1, [DIMENSIONS.CHYPRE]: 1 } }
+                ]
+            },
+            {
+                id: 27,
+                question: "你对“自由”最深层的定义是？",
+                options: [
+                    { text: "随时可以拔腿就跑、不受任何环境束缚的洒脱", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "拥有绝对的实力，从而自己制定规则的掌控感", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.OUD]: 2, [DIMENSIONS.SPICY]: 1 } },
+                    { text: "内心毫无波澜，不被世俗欲望和他人评价裹挟", scores: { [DIMENSIONS.TEA]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.MINERAL]: 1 } },
+                    { text: "能够坦然地做自己，像水一样轻盈自在", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.SKIN]: 1 } }
+                ]
+            },
+            {
+                id: 28,
+                question: "收到哪种礼物，会让你觉得对方“真的很懂你”？",
+                options: [
+                    { text: "一束刚好合你眼缘、不用名贵但鲜活的冷门花草", scores: { [DIMENSIONS.GREEN]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.TEA]: 1, [DIMENSIONS.FLORAL]: 1 } },
+                    { text: "一本寻觅已久、带有岁月痕迹的绝版旧书", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.SMOKY]: 1 } },
+                    { text: "一张能让你肾上腺素飙升的极限运动/ Livehouse 门票", scores: { [DIMENSIONS.SPICY]: 3, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.BOOZY]: 1 } },
+                    { text: "一款口感极具层次、需要静下来慢慢品尝的顶级年份酒", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.CHYPRE]: 1, [DIMENSIONS.OUD]: 1 } }
+                ]
+            },
+            {
+                id: 29,
+                question: "哪种空间气味会让你在疲惫时觉得“很有安全感”？",
+                options: [
+                    { text: "街角烘焙房飘出的带有焦糖和奶油的甜香", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.AMBER]: 1 } },
+                    { text: "爷爷书房里那把老旧藤椅和干燥木头的气息", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.TEA]: 1 } },
+                    { text: "刚洗净、被太阳暴晒过收进来的干爽白衬衫", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.POWDERY]: 1, [DIMENSIONS.CITRUS]: 1 } },
+                    { text: "高级酒店里那种极其统一、没有任何生活杂质的冷香", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.CHYPRE]: 1 } }
+                ]
+            },
+            {
+                id: 30,
+                question: "当手机电量仅剩 1%，且在外无法充电时，你的反应是？",
+                options: [
+                    { text: "无所谓，正好享受没有人能找到我的清净", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.TEA]: 2, [DIMENSIONS.GREEN]: 1 } },
+                    { text: "快速且极具逻辑地交代完最核心的事务，然后随它去", scores: { [DIMENSIONS.FOUGERE]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.WOODY]: 1 } },
+                    { text: "趁着关机前最后一秒，发一条自黑或搞怪的状态", scores: { [DIMENSIONS.FRUITY]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "感到极度焦虑，因为失去了对外界的连接和掌控感", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.OUD]: 2, [DIMENSIONS.SPICY]: 1 } }
+                ]
+            },
+
+            // === 第四阶段：灵魂底色与终极隐喻 ===
+            {
+                id: 31,
+                question: "面对突如其来的赞美，你内心的真实反应？",
+                options: [
+                    { text: "开心全写在脸上，大方且快乐地全盘接受", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SOLAR]: 2, [DIMENSIONS.FRUITY]: 1 } },
+                    { text: "礼貌道谢，但内心毫无波澜，极其客观地审视自己", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.CHYPRE]: 2, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "表面矜持，内心其实有点暗爽，并会默默记下", scores: { [DIMENSIONS.POWDERY]: 3, [DIMENSIONS.FLORAL]: 2, [DIMENSIONS.SKIN]: 1 } },
+                    { text: "第一反应是怀疑对方是否另有目的或在客套", scores: { [DIMENSIONS.SMOKY]: 3, [DIMENSIONS.LEATHER]: 2, [DIMENSIONS.OUD]: 1 } }
+                ]
+            },
+            {
+                id: 32,
+                question: "你最无法忍受的他人性格缺陷是？",
+                options: [
+                    { text: "磨叽拖沓、不直接、做事毫无干脆感", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.MINERAL]: 1 } },
+                    { text: "虚伪油腻、充满心机且不真诚", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.SKIN]: 1 } },
+                    { text: "情绪极度不稳定，遇到问题只会大喊大叫", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.TEA]: 1 } },
+                    { text: "软弱、毫无主见、总是随波逐流", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.OUD]: 2, [DIMENSIONS.SPICY]: 1 } }
+                ]
+            },
+            {
+                id: 33,
+                question: "如果抛开生存压力，能完全掌握一门精湛的手艺，你想成为？",
+                options: [
+                    { text: "永远在路上、记录野外生机的自然地理摄影师", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.CITRUS]: 1, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "在深夜听着爵士乐、为客人调制特饮的调酒师", scores: { [DIMENSIONS.BOOZY]: 3, [DIMENSIONS.AMBER]: 2, [DIMENSIONS.SPICY]: 1 } },
+                    { text: "在安静的工作室里敲打打磨的独立木作职人", scores: { [DIMENSIONS.WOODY]: 3, [DIMENSIONS.SMOKY]: 2, [DIMENSIONS.LEATHER]: 1 } },
+                    { text: "用巧手将各种鲜花与植物定格美好的花艺师", scores: { [DIMENSIONS.FLORAL]: 3, [DIMENSIONS.POWDERY]: 2, [DIMENSIONS.FRUITY]: 1 } }
+                ]
+            },
+            {
+                id: 34,
+                question: "走在深夜的城市街头，最吸引你目光的是？",
+                options: [
+                    { text: "还在营业的 24 小时便利店透出的温暖灯光", scores: { [DIMENSIONS.GOURMAND]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.SOLAR]: 1 } },
+                    { text: "极简的几何形路灯下，被拉得很长的清冷影子", scores: { [DIMENSIONS.MINERAL]: 3, [DIMENSIONS.AQUATIC]: 2, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "闪烁着迷幻色彩、充满夜生活气息的霓虹灯牌", scores: { [DIMENSIONS.SPICY]: 3, [DIMENSIONS.FRUITY]: 2, [DIMENSIONS.BOOZY]: 1 } },
+                    { text: "远处高楼大厦静谧而深邃的城市天际线轮廓", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.WOODY]: 1, [DIMENSIONS.SMOKY]: 1 } }
+                ]
+            },
+            {
+                id: 35,
+                question: "如果你的穿搭风格能注册一个商标，它的核心词会是？",
+                options: [
+                    { text: "“Clean Fit”：极简、干净、绝不拖泥带水", scores: { [DIMENSIONS.CITRUS]: 3, [DIMENSIONS.SKIN]: 2, [DIMENSIONS.AQUATIC]: 1, [DIMENSIONS.FOUGERE]: 1 } },
+                    { text: "“Old Money”：质感顶级、低调克制的老钱风", scores: { [DIMENSIONS.POWDERY]: 3, [DIMENSIONS.FOUGERE]: 2, [DIMENSIONS.FLORAL]: 1, [DIMENSIONS.CHYPRE]: 1 } },
+                    { text: "“Avant-Garde”：打破常规、充满结构感的先锋暗黑", scores: { [DIMENSIONS.LEATHER]: 3, [DIMENSIONS.MINERAL]: 2, [DIMENSIONS.OUD]: 1 } },
+                    { text: "“Bohemian”：色彩丰富、充满异域流浪感的波西米亚", scores: { [DIMENSIONS.AMBER]: 3, [DIMENSIONS.SPICY]: 2, [DIMENSIONS.BOOZY]: 1, [DIMENSIONS.FRUITY]: 1 } }
+                ]
+            },
+            {
+                id: 36,
+                question: "测试即将结束。如果你是一瓶香水，你希望自己留给别人最后的“尾韵（后调）”是？",
+                options: [
+                    { text: "干净到极致，仿佛风吹过没有留下任何负担的空白", scores: { [DIMENSIONS.AQUATIC]: 3, [DIMENSIONS.CITRUS]: 2, [DIMENSIONS.GREEN]: 1 } },
+                    { text: "绵长、温暖，像体温一样让人无法戒掉的安心余温", scores: { [DIMENSIONS.SKIN]: 3, [DIMENSIONS.GOURMAND]: 2, [DIMENSIONS.AMBER]: 1, [DIMENSIONS.POWDERY]: 1 } },
+                    { text: "不可侵犯的清冷高傲，只留给懂的人去回味", scores: { [DIMENSIONS.CHYPRE]: 3, [DIMENSIONS.WOODY]: 2, [DIMENSIONS.MINERAL]: 1, [DIMENSIONS.SMOKY]: 1 } },
+                    { text: "自由无垠、粗犷且充满原始生命力的旷野之风", scores: { [DIMENSIONS.MARINE]: 3, [DIMENSIONS.GREEN]: 2, [DIMENSIONS.LEATHER]: 1, [DIMENSIONS.SPICY]: 1 } }
+                ]
+            }
+        ]; // 题库数组结束
+
+        // ==========================================
+        // 4. 统计算法与前端交互核心逻辑 (完整修复版)
+        // ==========================================
+
+        let currentQuestion = 0;
+        let top3Global = [];
+        let isCalculating = false; // 核心修复一：防连击锁，防止疯狂点击导致结果卡片重复
+        let currentResultPayload = null;
+        let currentSessionMeta = null;
+        let currentUnlockState = 'locked';
+
+        // == 核心修复二：持久化存储，防意外刷新流失 ==
+        function saveProgress() {
+            sessionStorage.setItem('perfume_test_scores', JSON.stringify(scores));
+            sessionStorage.setItem('perfume_test_current', currentQuestion);
+        }
+
+        function loadProgress() {
+            const savedScores = sessionStorage.getItem('perfume_test_scores');
+            const savedCurrent = sessionStorage.getItem('perfume_test_current');
+            if (savedScores && savedCurrent) {
+                scores = JSON.parse(savedScores);
+                currentQuestion = parseInt(savedCurrent, 10);
+                return true;
+            }
+            return false;
+        }
+
+        function clearProgress() {
+            sessionStorage.removeItem('perfume_test_scores');
+            sessionStorage.removeItem('perfume_test_current');
+        }
+
+        function resetExperience() {
+            clearProgress();
+            Object.values(STORAGE_KEYS).forEach(key => {
+                sessionStorage.removeItem(key);
+                localStorage.removeItem(key);
+            });
+            currentResultPayload = null;
+            currentSessionMeta = null;
+            currentUnlockState = 'locked';
+
+            const cleanUrl = new URL(window.location.href);
+            cleanUrl.search = '';
+            cleanUrl.hash = '';
+            window.location.replace(cleanUrl.href);
+        }
+
+        function getChannelFromUrl() {
+            const channel = (urlParams.get('from') || 'direct').toLowerCase();
+            return CHANNEL_CONFIG[channel] ? channel : 'direct';
+        }
+
+        function getModeFromUrl() {
+            const mode = (urlParams.get('mode') || 'free').toLowerCase();
+            return ['free', 'paid', 'unlock'].includes(mode) ? mode : 'free';
+        }
+
+        function getChannelConfig(channel = CURRENT_CHANNEL) {
+            return CHANNEL_CONFIG[channel] || CHANNEL_CONFIG.direct;
+        }
+
+        function buildPublicFreeUrl(channel = CURRENT_CHANNEL) {
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.searchParams.set('from', channel);
+            url.searchParams.set('mode', 'free');
+            return url.toString();
+        }
+
+        function buildUnlockLandingUrl(sessionMeta = currentSessionMeta) {
+            const resolved = normalizeSessionMeta(sessionMeta) || { channel: CURRENT_CHANNEL };
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.searchParams.set('from', resolved.channel || CURRENT_CHANNEL);
+            url.searchParams.set('mode', 'unlock');
+            if (resolved.sessionId) url.searchParams.set('session_id', resolved.sessionId);
+            if (resolved.sessionCode) url.searchParams.set('session_code', resolved.sessionCode);
+            return url.toString();
+        }
+
+        function normalizeSessionMeta(raw = null) {
+            if (!raw) return null;
+            return {
+                sessionId: raw.sessionId || raw.session_id || '',
+                sessionCode: raw.sessionCode || raw.session_code || '',
+                expiresAt: raw.expiresAt || raw.expires_at || '',
+                channel: raw.channel || CURRENT_CHANNEL
+            };
+        }
+
+        function getSessionReferenceFromUrl() {
+            if (!INITIAL_SESSION_ID && !INITIAL_SESSION_CODE) return null;
+            return normalizeSessionMeta({
+                session_id: INITIAL_SESSION_ID,
+                session_code: INITIAL_SESSION_CODE,
+                channel: CURRENT_CHANNEL
+            });
+        }
+
+        function isSameSessionMeta(left, right) {
+            const a = normalizeSessionMeta(left);
+            const b = normalizeSessionMeta(right);
+            if (!a || !b) return false;
+            if (a.sessionId && b.sessionId) return a.sessionId === b.sessionId;
+            if (a.sessionCode && b.sessionCode) return a.sessionCode === b.sessionCode;
+            return false;
+        }
+
+        function getEffectiveShareChannel() {
+            return currentSessionMeta && currentSessionMeta.channel ? currentSessionMeta.channel : CURRENT_CHANNEL;
+        }
+
+        function makeSessionId() {
+            return `sess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function makeSessionCode() {
+            return Math.random().toString(36).slice(2, 8).toUpperCase();
+        }
+
+        function safeJsonParse(value, fallback = null) {
+            try {
+                return value ? JSON.parse(value) : fallback;
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function savePendingSession(sessionMeta) {
+            localStorage.setItem(STORAGE_KEYS.pendingSession, JSON.stringify(sessionMeta));
+        }
+
+        function loadPendingSession() {
+            return safeJsonParse(localStorage.getItem(STORAGE_KEYS.pendingSession), null);
+        }
+
+        function savePendingResult(resultPayload) {
+            localStorage.setItem(STORAGE_KEYS.pendingResult, JSON.stringify(resultPayload));
+        }
+
+        function loadPendingResult() {
+            return safeJsonParse(localStorage.getItem(STORAGE_KEYS.pendingResult), null);
+        }
+
+        function saveUnlockedSession(data) {
+            localStorage.setItem(STORAGE_KEYS.unlockedSession, JSON.stringify(data));
+        }
+
+        function loadUnlockedSession() {
+            return safeJsonParse(localStorage.getItem(STORAGE_KEYS.unlockedSession), null);
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function buildResultPayload(sortedScores) {
+            const top3 = [sortedScores[0][0], sortedScores[1][0], sortedScores[2][0]];
+            const titles = ["主导底色 / Core Motif", "显性修饰 / Outer Facet", "隐性张力 / Hidden Depth"];
+            const cards = top3.map((dim, index) => {
+                const data = resultDetails[dim];
+                return {
+                    dim,
+                    title: titles[index],
+                    name: data.name,
+                    slogan: data.slogan,
+                    desc: data.desc,
+                    materials: data.materials,
+                    perfumes: data.perfumes
+                };
+            });
+
+            return {
+                top3,
+                cards,
+                scores: Object.fromEntries(sortedScores)
+            };
+        }
+
+        function applyResultAura(resultPayload) {
+            if (!resultPayload || !resultPayload.top3 || resultPayload.top3.length < 3) return;
+
+            top3Global = resultPayload.top3.slice(0, 3);
+            const color1 = SCENT_COLORS[top3Global[0]];
+            const color2 = SCENT_COLORS[top3Global[1]];
+            const color3 = SCENT_COLORS[top3Global[2]];
+            const ambientBg = document.getElementById('ambient-bg');
+            if (ambientBg) ambientBg.style.opacity = '0';
+
+            const auraGradient = `
+            radial-gradient(circle at 10% 10%, ${color1} 0%, transparent 60%),
+            radial-gradient(circle at 90% 30%, ${color2} 0%, transparent 60%),
+            radial-gradient(circle at 50% 90%, ${color3} 0%, transparent 70%),
+            #Faf9f6
+        `;
+
+            document.body.style.background = auraGradient;
+            document.getElementById('poster-canvas').style.background = auraGradient;
+        }
+
+        function setUnlockStatus(message, isError = false) {
+            const statusNode = document.getElementById('unlock-status');
+            if (!statusNode) return;
+            statusNode.innerText = message;
+            statusNode.style.color = isError ? '#9b4a4a' : '#5e5e5e';
+        }
+
+        async function copyText(text) {
+            if (!text) return false;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                } catch (error) {
+                    // Fall through to execCommand fallback.
+                }
+            }
+
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.setAttribute('readonly', 'readonly');
+                textarea.style.position = 'fixed';
+                textarea.style.top = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                textarea.setSelectionRange(0, textarea.value.length);
+                const copied = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                return copied;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function getMockSessions() {
+            return safeJsonParse(localStorage.getItem(STORAGE_KEYS.mockSessions), {});
+        }
+
+        function setMockSessions(value) {
+            localStorage.setItem(STORAGE_KEYS.mockSessions, JSON.stringify(value));
+        }
+
+        async function createSessionViaApi(payload) {
+            const sessionId = makeSessionId();
+            const sessionCode = makeSessionCode();
+            const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+            if (!API_BASE) {
+                const mockSessions = getMockSessions();
+                mockSessions[sessionId] = {
+                    session_id: sessionId,
+                    session_code: sessionCode,
+                    channel: payload.channel,
+                    result: payload.result,
+                    expires_at: expiresAt
+                };
+                setMockSessions(mockSessions);
+                return {
+                    ok: true,
+                    session_id: sessionId,
+                    session_code: sessionCode,
+                    expires_at: expiresAt
+                };
+            }
+
+            const response = await fetch(`${API_BASE.replace(/\/$/, '')}/api/session/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            return response.json();
+        }
+
+        async function unlockSessionViaApi(payload) {
+            if (!API_BASE) {
+                const mockSessions = getMockSessions();
+                const session = payload.session_id ? mockSessions[payload.session_id] : Object.values(mockSessions).find(item => item.session_code === payload.session_code);
+                const expectedCode = getChannelConfig(payload.channel).previewUnlockCode;
+                if (!session) {
+                    return { ok: false, error: 'session_not_found' };
+                }
+                if (!payload.unlock_code || payload.unlock_code.trim() !== expectedCode) {
+                    return { ok: false, error: 'invalid_unlock_code' };
+                }
+                return {
+                    ok: true,
+                    unlocked: true,
+                    result: session.result,
+                    session: {
+                        session_id: session.session_id,
+                        session_code: session.session_code,
+                        channel: session.channel,
+                        expires_at: session.expires_at
+                    }
+                };
+            }
+
+            const response = await fetch(`${API_BASE.replace(/\/$/, '')}/api/unlock`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            return response.json();
+        }
+
+        async function fetchSessionViaApi(reference = {}) {
+            const sessionMeta = normalizeSessionMeta(reference);
+            if (!sessionMeta || (!sessionMeta.sessionId && !sessionMeta.sessionCode)) {
+                return { ok: false, error: 'no_session_reference' };
+            }
+
+            if (!API_BASE) {
+                const mockSessions = getMockSessions();
+                const session = sessionMeta.sessionId
+                    ? mockSessions[sessionMeta.sessionId]
+                    : Object.values(mockSessions).find(item => item.session_code === sessionMeta.sessionCode);
+
+                if (!session) {
+                    return { ok: false, error: 'session_not_found' };
+                }
+
+                return {
+                    ok: true,
+                    session
+                };
+            }
+
+            if (!sessionMeta.sessionId) {
+                return { ok: false, error: 'session_id_required' };
+            }
+
+            const response = await fetch(`${API_BASE.replace(/\/$/, '')}/api/session/${encodeURIComponent(sessionMeta.sessionId)}`);
+            return response.json();
+        }
+
+        function buildUnlockPanelHtml() {
+            const channelConfig = getChannelConfig();
+            const sessionMeta = normalizeSessionMeta(currentSessionMeta);
+            const sessionCode = sessionMeta && sessionMeta.sessionCode ? sessionMeta.sessionCode : '';
+            return `
+                <div class="unlock-panel">
+                    <div class="unlock-title">香气未完待续</div>
+                    <div class="unlock-desc">当前先为你展示主导底色。完成购买后，输入解锁码即可立刻展开完整 3 维结果，无需重做题目。</div>
+                    ${sessionCode ? `<div style="text-align:center;"><span class="session-chip">当前会话码：${escapeHtml(sessionCode)}</span></div>` : ''}
+                    <div class="unlock-actions">
+                        <button id="unlock-cta-btn" class="unlock-primary">复制店铺口令与续香码，前往${escapeHtml(channelConfig.label)}购买完整版</button>
+                        <input id="session-code-input" class="unlock-input" type="text" value="${escapeHtml(sessionCode)}" placeholder="若换了设备，请输入刚才页面上的会话码">
+                        <input id="unlock-code-input" class="unlock-input" type="text" placeholder="输入购买后拿到的解锁码">
+                        <button id="unlock-submit-btn" class="unlock-secondary">输入解锁码，立刻展开完整结果</button>
+                    </div>
+                    <div class="unlock-help">系统会先复制，再尝试打开${escapeHtml(channelConfig.label)}。如果没有自动跳转，请手动搜索“${escapeHtml(channelConfig.searchKeyword || channelConfig.storeName)}”。</div>
+                    <div id="unlock-status" class="unlock-status"></div>
+                </div>
+            `;
+        }
+
+        function buildUnlockCopyText() {
+            const channelConfig = getChannelConfig();
+            const sessionMeta = normalizeSessionMeta(currentSessionMeta);
+            const lines = [
+                `平台：${channelConfig.label}`,
+                `搜索词：${channelConfig.searchKeyword || channelConfig.storeName || channelConfig.label}`
+            ];
+
+            if (sessionMeta && sessionMeta.sessionCode) {
+                lines.push(`会话码：${sessionMeta.sessionCode}`);
+            }
+            if (sessionMeta && sessionMeta.sessionId) {
+                lines.push(`续香链接：${buildUnlockLandingUrl(sessionMeta)}`);
+            }
+
+            lines.push('购买后回到网页输入解锁码即可，无需重做题目。');
+            return lines.join('\n');
+        }
+
+        function renderResultView(unlocked = false) {
+            if (!currentResultPayload) return;
+
+            currentUnlockState = unlocked ? 'unlocked' : 'locked';
+            top3Global = currentResultPayload.top3.slice(0, 3);
+            const contentDiv = document.getElementById('result-content');
+            const posterShareBtn = document.getElementById('poster-share-btn');
+
+            contentDiv.classList.toggle('free-mode', !unlocked);
+            contentDiv.innerHTML = '';
+
+            currentResultPayload.cards.forEach((card, index) => {
+                const locked = !unlocked && index > 0;
+                contentDiv.innerHTML += `
+                <div class="result-card-shell ${locked ? 'locked' : ''}">
+                    <div class="scent-card">
+                        <span class="scent-badge">${card.title}</span>
+                        <h3 class="scent-name">${card.name}</h3>
+                        <div class="slogan">${card.slogan}</div>
+                        <div class="scent-desc">${card.desc}</div>
+                        <div class="scent-perfumes">
+                            <span class="perfume-label">核心香韵</span> ${card.materials}<br>
+                            <span class="perfume-label">代表沙龙香</span> ${card.perfumes}
+                        </div>
+                    </div>
+                    ${locked ? '<div class="locked-card-overlay"><div class="locked-card-copy">待解锁</div></div>' : ''}
+                </div>
+                `;
+            });
+
+            if (!unlocked) {
+                contentDiv.innerHTML += buildUnlockPanelHtml();
+                bindUnlockInteractions();
+            }
+
+            if (posterShareBtn) {
+                posterShareBtn.style.display = unlocked ? 'block' : 'none';
+            }
+        }
+
+        function renderUnlockOnlyView(prefillSessionCode = '', prefillUnlockCode = INITIAL_UNLOCK_CODE) {
+            currentUnlockState = 'locked';
+            currentResultPayload = null;
+            const contentDiv = document.getElementById('result-content');
+            const posterShareBtn = document.getElementById('poster-share-btn');
+
+            contentDiv.classList.add('free-mode');
+            contentDiv.innerHTML = `
+                <div class="unlock-panel">
+                    <div class="unlock-title">继续解锁你的香气档案</div>
+                    <div class="unlock-desc">如果你已经完成测试并完成购买，现在输入会话码与解锁码，就能直接找回完整 3 维结果，无需重做题目。</div>
+                    <div class="unlock-actions">
+                        <input id="session-code-input" class="unlock-input" type="text" value="${escapeHtml(prefillSessionCode)}" placeholder="输入会话码">
+                        <input id="unlock-code-input" class="unlock-input" type="text" value="${escapeHtml(prefillUnlockCode)}" placeholder="输入解锁码">
+                        <button id="unlock-submit-btn" class="unlock-primary">立即解锁完整结果</button>
+                    </div>
+                    <div class="unlock-help">会话码来自你做完测试后页面显示的那串短码。同设备返回时，一般已经自动带回，无需重做。</div>
+                    <div id="unlock-status" class="unlock-status"></div>
+                </div>
+            `;
+
+            if (posterShareBtn) {
+                posterShareBtn.style.display = 'none';
+            }
+
+            bindUnlockInteractions();
+        }
+
+        function renderSessionInitFailedView() {
+            currentUnlockState = 'locked';
+            currentSessionMeta = null;
+            const contentDiv = document.getElementById('result-content');
+            const posterShareBtn = document.getElementById('poster-share-btn');
+
+            contentDiv.classList.add('free-mode');
+            contentDiv.innerHTML = `
+                <div class="unlock-panel">
+                    <div class="unlock-title">暂时无法开启解锁链路</div>
+                    <div class="unlock-desc">这次结果已经算出来了，但后端会话保存失败。为了避免你付款后找不回完整结果，当前页面不会继续展示支付入口，请稍后刷新再试。</div>
+                    <div class="unlock-help">正式上线前，请先填好 Worker 地址并验证创建会话成功，再对外售卖。</div>
+                </div>
+            `;
+
+            if (posterShareBtn) {
+                posterShareBtn.style.display = 'none';
+            }
+        }
+
+        function bindUnlockInteractions() {
+            const ctaBtn = document.getElementById('unlock-cta-btn');
+            const submitBtn = document.getElementById('unlock-submit-btn');
+
+            if (ctaBtn) {
+                ctaBtn.onclick = handleUnlockCTA;
+            }
+            if (submitBtn) {
+                submitBtn.onclick = handleUnlockSubmit;
+            }
+        }
+
+        async function handleUnlockCTA() {
+            const channelConfig = getChannelConfig();
+            const copied = await copyText(buildUnlockCopyText());
+            if (copied) {
+                setUnlockStatus(`已复制店铺口令与续香码，正在尝试打开${channelConfig.label}。`);
+            } else {
+                setUnlockStatus(`未能自动复制，请手动搜索“${channelConfig.searchKeyword || channelConfig.storeName}”，并记下当前会话码。`, true);
+            }
+
+            if (channelConfig.productUrl) {
+                setTimeout(() => {
+                    window.location.href = channelConfig.productUrl;
+                }, copied ? 120 : 0);
+            }
+        }
+
+        async function handleUnlockSubmit() {
+            const sessionInput = document.getElementById('session-code-input');
+            const unlockInput = document.getElementById('unlock-code-input');
+            const manualSessionCode = sessionInput ? sessionInput.value.trim().toUpperCase() : '';
+            const unlockCode = unlockInput ? unlockInput.value.trim() : '';
+
+            if (!unlockCode) {
+                setUnlockStatus('请先输入解锁码。', true);
+                return;
+            }
+
+            const explicitSession = getSessionReferenceFromUrl();
+            const localSession = normalizeSessionMeta(currentSessionMeta) || normalizeSessionMeta(loadPendingSession());
+            const manualSession = manualSessionCode ? normalizeSessionMeta({
+                session_code: manualSessionCode,
+                channel: CURRENT_CHANNEL
+            }) : null;
+            const sessionMeta = explicitSession || manualSession || localSession;
+
+            if (!sessionMeta || (!sessionMeta.sessionId && !sessionMeta.sessionCode)) {
+                setUnlockStatus('没有找到对应的会话记录。若你换了设备，请先输入会话码。', true);
+                return;
+            }
+
+            setUnlockStatus('正在校验解锁码...');
+
+            try {
+                const response = await unlockSessionViaApi({
+                    session_id: sessionMeta.sessionId || '',
+                    session_code: manualSessionCode || sessionMeta.sessionCode || '',
+                    unlock_code: unlockCode,
+                    channel: sessionMeta.channel || CURRENT_CHANNEL
+                });
+
+                if (!response.ok || !response.unlocked || !response.result) {
+                    throw new Error(response.error || 'unlock_failed');
+                }
+
+                currentResultPayload = response.result;
+                currentSessionMeta = normalizeSessionMeta(response.session || sessionMeta) || sessionMeta;
+                if (!currentSessionMeta.sessionCode && manualSessionCode) {
+                    currentSessionMeta.sessionCode = manualSessionCode;
+                }
+
+                savePendingSession(currentSessionMeta);
+                savePendingResult(response.result);
+                saveUnlockedSession({
+                    session: currentSessionMeta,
+                    result: response.result
+                });
+                applyResultAura(response.result);
+                renderResultView(true);
+                setUnlockStatus('已解锁完成，完整结果已展开。');
+            } catch (error) {
+                setUnlockStatus('解锁失败，请检查会话码与解锁码后重试。', true);
+            }
+        }
+
+        async function restoreSessionPreviewByReference(reference) {
+            const normalized = normalizeSessionMeta(reference);
+            if (!normalized) return false;
+
+            const localSession = normalizeSessionMeta(loadPendingSession());
+            const localResult = loadPendingResult();
+            if (localSession && localResult && isSameSessionMeta(localSession, normalized)) {
+                currentSessionMeta = localSession;
+                currentResultPayload = localResult;
+                savePendingSession(currentSessionMeta);
+                savePendingResult(currentResultPayload);
+                applyResultAura(currentResultPayload);
+                renderResultView(false);
+                return true;
+            }
+
+            if (!normalized.sessionId) {
+                return false;
+            }
+
+            const response = await fetchSessionViaApi(normalized);
+            if (!response.ok || !response.session || !response.session.result) {
+                return false;
+            }
+
+            currentSessionMeta = normalizeSessionMeta(response.session);
+            currentResultPayload = response.session.result;
+            savePendingSession(currentSessionMeta);
+            savePendingResult(currentResultPayload);
+            applyResultAura(currentResultPayload);
+            renderResultView(false);
+            return true;
+        }
+
+        async function tryRestoreUnlockedView() {
+            const explicitSession = getSessionReferenceFromUrl();
+            const unlocked = loadUnlockedSession();
+            const unlockedSession = unlocked ? normalizeSessionMeta(unlocked.session) : null;
+            const pendingSession = normalizeSessionMeta(loadPendingSession());
+            const pendingResult = loadPendingResult();
+
+            if (unlocked && unlocked.result) {
+                const canUseUnlocked = explicitSession
+                    ? isSameSessionMeta(unlockedSession, explicitSession)
+                    : CURRENT_MODE === 'paid' || (pendingSession && isSameSessionMeta(unlockedSession, pendingSession));
+                if (canUseUnlocked) {
+                    currentSessionMeta = unlockedSession;
+                    currentResultPayload = unlocked.result;
+                    applyResultAura(currentResultPayload);
+                    showOnlyScreen('result-screen');
+                    renderResultView(true);
+                    return true;
+                }
+            }
+
+            if (explicitSession) {
+                showOnlyScreen('result-screen');
+                const restored = await restoreSessionPreviewByReference(explicitSession);
+                if (!restored) {
+                    currentSessionMeta = explicitSession;
+                    renderUnlockOnlyView(explicitSession.sessionCode || '', INITIAL_UNLOCK_CODE);
+                }
+                if (INITIAL_UNLOCK_CODE) {
+                    const input = document.getElementById('unlock-code-input');
+                    if (input) input.value = INITIAL_UNLOCK_CODE;
+                    await handleUnlockSubmit();
+                }
+                return true;
+            }
+
+            if (pendingSession && pendingResult && pendingSession.channel === CURRENT_CHANNEL && (CURRENT_MODE === 'free' || CURRENT_MODE === 'unlock')) {
+                currentSessionMeta = pendingSession;
+                currentResultPayload = pendingResult;
+                applyResultAura(currentResultPayload);
+                showOnlyScreen('result-screen');
+                renderResultView(false);
+                if (INITIAL_UNLOCK_CODE) {
+                    const input = document.getElementById('unlock-code-input');
+                    if (input) input.value = INITIAL_UNLOCK_CODE;
+                    await handleUnlockSubmit();
+                }
+                return true;
+            }
+
+            if (CURRENT_MODE === 'unlock') {
+                currentSessionMeta = pendingSession || normalizeSessionMeta({
+                    session_code: INITIAL_SESSION_CODE,
+                    channel: CURRENT_CHANNEL
+                });
+                showOnlyScreen('result-screen');
+                renderUnlockOnlyView(INITIAL_SESSION_CODE || (pendingSession ? pendingSession.sessionCode : ''), INITIAL_UNLOCK_CODE);
+                return true;
+            }
+
+            return false;
+        }
+
+        // Fisher-Yates 随机洗牌算法 (防背题)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // 页面初始化拦截逻辑（检查是否有未完成的进度）
+        window.onload = async () => {
+            if (urlParams.get('reset') === '1') {
+                resetExperience();
+                return;
+            }
+
+            const hasProgress = loadProgress();
+            if (hasProgress && currentQuestion < questions.length && currentQuestion > 0) {
+                showOnlyScreen('quiz-screen');
+                loadQuestion();
+                return;
+            }
+
+            if (await tryRestoreUnlockedView()) {
+                return;
+            }
+        };
+
+        function switchScreen(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            document.getElementById(showId).classList.add('active');
+        }
+
+        function showOnlyScreen(showId) {
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+            document.getElementById(showId).classList.add('active');
+        }
+
+        function startTest() {
+            // 将第36题（收尾题）取出，只打乱前35题，再把第36题放回末尾
+            const lastQuestion = questions.pop();
+            shuffleArray(questions);
+            questions.push(lastQuestion);
+            switchScreen('start-screen', 'quiz-screen');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-counter').innerText = `Question ${String(currentQuestion + 1).padStart(2, '0')} / ${questions.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentQuestion) / questions.length) * 100}%`;
+
+            const qText = document.getElementById('question-text');
+            qText.innerText = q.question;
+            qText.style.animation = 'none';
+            qText.offsetHeight;
+            qText.style.animation = 'fadeUpIn 0.5s ease forwards';
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                // 算法：找出该选项得分最高的香调，提取其专属颜色
+                const topDim = Object.keys(opt.scores).reduce((a, b) => opt.scores[a] > opt.scores[b] ? a : b);
+                // 提取基础色，并将透明度加深到 1.0，确保渲染整个按钮时能看清白色文字
+                const optColor = SCENT_COLORS[topDim].replace(/0\.6\)/, '1.0)');
+
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.innerText = opt.text;
+                btn.style.animation = `fadeUpIn 0.5s ease ${index * 0.1}s backwards`;
+                btn.style.setProperty('--opt-color', optColor); // 注入动态悬停线颜色
+                btn.onclick = (e) => selectOption(opt.scores, e.currentTarget);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(weights, btnElement) {
+            if (isCalculating) return; // 拦截手速过快
+            isCalculating = true; // 锁死，防止同一题乱点
+
+            // 增加点击后的UI反馈（变半透明+缩放+出现对勾）
+            btnElement.classList.add('selected');
+
+            for (const [dim, weight] of Object.entries(weights)) {
+                scores[dim] += weight;
+            }
+
+            currentQuestion++;
+            saveProgress(); // 每次答完题立即存盘
+
+            // 延迟250ms进入下一题，让用户看清对勾和缩放反馈
+            setTimeout(() => {
+                if (currentQuestion < questions.length) {
+                    loadQuestion();
+                    isCalculating = false; // 加载新题后解锁
+                } else {
+                    clearProgress(); // 答完 36 题立即清空缓存
+                    document.getElementById('progress-bar').style.width = '100%';
+                    setTimeout(() => {
+                        switchScreen('quiz-screen', 'loading-screen');
+                        setTimeout(calculateResult, 2500);
+                    }, 300);
+                }
+            }, 250);
+        }
+
+        async function calculateResult() {
+            switchScreen('loading-screen', 'result-screen');
+
+            const computedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            currentResultPayload = buildResultPayload(computedScores);
+            applyResultAura(currentResultPayload);
+            localStorage.removeItem(STORAGE_KEYS.unlockedSession);
+
+            try {
+                const sessionResponse = await createSessionViaApi({
+                    channel: CURRENT_CHANNEL,
+                    result: currentResultPayload,
+                    client_meta: {
+                        user_agent: navigator.userAgent,
+                        version: 'light-backend-v1'
+                    }
+                });
+
+                if (!sessionResponse.ok) {
+                    throw new Error('session_create_failed');
+                }
+
+                currentSessionMeta = normalizeSessionMeta({
+                    session_id: sessionResponse.session_id,
+                    session_code: sessionResponse.session_code,
+                    expires_at: sessionResponse.expires_at,
+                    channel: CURRENT_CHANNEL
+                });
+            } catch (error) {
+                if (API_BASE) {
+                    renderSessionInitFailedView();
+                    return;
+                }
+                currentSessionMeta = normalizeSessionMeta({
+                    session_id: makeSessionId(),
+                    session_code: makeSessionCode(),
+                    expires_at: '',
+                    channel: CURRENT_CHANNEL
+                });
+            }
+
+            savePendingSession(currentSessionMeta);
+            savePendingResult(currentResultPayload);
+            renderResultView(false);
+        }
+
+        function openModal() {
+            if (currentUnlockState !== 'unlocked') return;
+            document.getElementById('download-modal').classList.add('active');
+        }
+        function closeModal() { document.getElementById('download-modal').classList.remove('active'); }
+
+        function generatePoster() {
+            if (currentUnlockState !== 'unlocked') return;
+            const nameInput = document.getElementById('user-name-input').value.trim();
+            const name = nameInput || '神秘人';
+
+            const genBtn = document.getElementById('gen-btn');
+            genBtn.innerText = '正在高精度渲染中...';
+            genBtn.disabled = true;
+
+            document.getElementById('poster-sig-name').innerText = name;
+            const posterContent = document.getElementById('poster-content-area');
+            posterContent.innerHTML = '';
+            const titles = ["主导底色 / Core Motif", "显性修饰 / Outer Facet", "隐性张力 / Hidden Depth"];
+
+            top3Global.forEach((dim, index) => {
+                const data = resultDetails[dim];
+                // 海报同样去除 tags 渲染
+                posterContent.innerHTML += `
+                <div class="poster-card">
+                    <div class="poster-badge">${titles[index]}</div>
+                    <div class="poster-name">${data.name}</div>
+                    <div class="poster-slogan">${data.slogan}</div>
+                </div>
+            `;
+            });
+
+            document.getElementById('qrcode-canvas').innerHTML = '';
+            new QRCode(document.getElementById("qrcode-canvas"), {
+                text: buildPublicFreeUrl(getEffectiveShareChannel()),
+                width: 130, height: 130, colorDark: "#1a1a1a", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H
+            });
+
+            setTimeout(() => {
+                // 核心修复三：强制坐标归零，彻底消灭 html2canvas 卡死和视差白屏 Bug
+                window.scrollTo(0, 0);
+
+                html2canvas(document.getElementById('poster-canvas'), {
+                    scale: 2, // 1080x1920 放大两倍实现超清画质
+                    useCORS: true,
+                    backgroundColor: null, // 设为 null 以保证刚刚注入的动态光晕生效
+                    logging: false,
+                    scrollY: 0,
+                    windowY: 0
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `${name}的专属香氛档案.png`;
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+
+                    closeModal();
+                    genBtn.innerText = '确认生成并下载';
+                    genBtn.disabled = false;
+                }).catch(err => {
+                    alert("渲染失败，请刷新页面重试。");
+                    genBtn.innerText = '确认生成并下载';
+                    genBtn.disabled = false;
+                });
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>

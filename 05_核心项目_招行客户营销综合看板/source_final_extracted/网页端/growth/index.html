@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>增量拓客地图 · 招商银行</title>
+  <link rel="stylesheet" href="../css/bank-shell.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body class="page-map workspace growth-ws">
+  <div class="workspace-app">
+    <header class="ws-top">
+      <a class="back" href="../index.html">← 入口</a>
+      <div class="ws-brand">
+        <div class="seal">招</div>
+        <div>
+          <h1>增量拓客地图</h1>
+          <div class="sub">全国 · 城市 · 支行三级拓客</div>
+        </div>
+      </div>
+      <div class="search-box search-wrap" id="searchWrap">
+        <span>⌕</span>
+        <input id="branchSearch" type="search" placeholder="搜索真实网点并定位，如：武侯、南山、陆家嘴…" autocomplete="off" />
+        <button type="button" class="btn" id="branchSearchBtn" style="padding:6px 12px;">搜索</button>
+        <div id="branchSearchDrop" class="search-drop" hidden></div>
+      </div>
+      <select id="industryFilter" aria-label="产业链">
+        <option value="lowAltitude">低空经济</option>
+        <option value="bio">生物医药</option>
+        <option value="semi">半导体</option>
+        <option value="robot">机器人</option>
+        <option value="nev" selected>新能源汽车</option>
+      </select>
+      <button type="button" class="btn" id="btnVisitList">生成拜访清单</button>
+    </header>
+
+    <div class="ws-body">
+      <!-- 左：本月业绩（全国 / 辖区均保留） -->
+      <aside class="ws-panel left">
+        <div class="ws-user">
+          <div class="avatar">赵</div>
+          <div>
+            <strong>赵明</strong>
+            <span>综合支行 · 对公客户经理</span>
+          </div>
+        </div>
+        <div class="panel-hd">
+          <h2>本月业绩完成</h2>
+          <div class="seg" id="periodSeg">
+            <button type="button" data-period="month" class="active">本月</button>
+            <button type="button" data-period="year">本年</button>
+          </div>
+        </div>
+        <div class="ws-rate">
+          <div class="lab" id="rateLab">本月综合完成率</div>
+          <div class="val" id="rateVal">—</div>
+        </div>
+        <div id="perfList"></div>
+      </aside>
+
+      <!-- 中：地图 / 支行 / 画像 -->
+      <main class="ws-center">
+        <div class="ws-map-toolbar" id="mapToolbar">
+          <div>
+            <h2 id="centerTitle">全国-城市-支行三级拓客入口</h2>
+            <div class="hint" id="centerHint">全国省会飞线 · 放大可见街道与真实网点 · 点击进入辖区</div>
+          </div>
+          <div class="seg" id="lodSeg">
+            <button type="button" data-lod="nation" class="active">全国</button>
+            <button type="button" data-lod="province">省内城市</button>
+            <button type="button" data-lod="city">城市支行</button>
+          </div>
+        </div>
+
+        <div class="ws-map-stage">
+          <section class="view-layer active" id="view-map">
+            <div id="chinaMap" class="fill"></div>
+            <div class="map-float bl">滚轮放大查看街道 · 右上角可切换卫星影像</div>
+            <div class="map-float br">
+              <button type="button" class="btn ghost" id="btnResetMap">重置视图</button>
+            </div>
+          </section>
+
+          <section class="view-layer" id="view-branch">
+            <div id="branchMap" class="fill"></div>
+            <div class="branch-float-hd">
+              <div class="cardish">
+                <h3 id="branchTitle">支行辖区</h3>
+                <div class="hint" id="branchSub">—</div>
+              </div>
+              <button type="button" class="btn ghost" data-go="map">返回地图</button>
+            </div>
+            <div class="industry-bar" id="industryTabs"></div>
+            <div class="map-float br" style="display:flex;gap:8px;align-items:center;">
+              <span class="chip red" id="chainCountChip">企业 0</span>
+              <span class="chip" id="chainScoreChip">景气 —</span>
+            </div>
+          </section>
+
+          <section class="view-layer scroll" id="view-customer">
+            <div class="cp">
+              <header class="cp-hd">
+                <div>
+                  <h2 id="coName">企业画像</h2>
+                  <div class="hint" id="coMeta">—</div>
+                  <div class="cp-tags" id="coChips"></div>
+                </div>
+                <button type="button" class="btn ghost" data-go="branch">返回辖区</button>
+              </header>
+
+              <div class="cp-layout">
+                <div class="cp-charts cp-charts-3">
+                  <section class="cp-card cp-score cp-score-compact">
+                    <div class="cp-score-inline">
+                      <div class="cp-score-hero" id="coScoreHero"></div>
+                      <div class="cp-score-side">
+                        <div class="cp-dim-lab">四维评分</div>
+                        <div id="coScoreRadar" class="cp-chart-radar"></div>
+                      </div>
+                    </div>
+                  </section>
+                  <section class="cp-card">
+                    <h3>结算活跃趋势</h3>
+                    <div id="coSettleChart" class="cp-chart"></div>
+                  </section>
+                  <section class="cp-card">
+                    <h3>财务健康对比</h3>
+                    <div id="coFinanceChart" class="cp-chart"></div>
+                  </section>
+                </div>
+
+                <div class="cp-mid">
+                  <section class="cp-card cp-biz-slim">
+                    <h3>工商与授信</h3>
+                    <div class="cp-tiles" id="coBiz"></div>
+                  </section>
+                  <section class="cp-card">
+                    <h3>拜访要点</h3>
+                    <ul class="cp-bullets" id="coVisit"></ul>
+                  </section>
+                </div>
+
+                <section class="cp-card cp-opp-action">
+                  <div class="cp-opp-hd">
+                    <h3>机会点与下一步建议</h3>
+                  </div>
+                  <div class="cp-opp-action-grid" id="coOpps"></div>
+                </section>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- 右：全国图=KPI；进入网点后=Top 景气行业 -->
+      <aside class="ws-panel right">
+        <div id="asideRightMap">
+          <div class="panel-hd"><h2>KPI 缺口与冲刺</h2></div>
+          <div class="days-box">
+            <span class="n" id="daysNum">—</span>
+            <span class="t" id="daysLeft">距月末</span>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px;">距 KPI 目标</div>
+            <div id="gapList"></div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;">本月冲刺动作</div>
+            <div id="sprintList" style="display:grid;gap:8px;"></div>
+          </div>
+        </div>
+        <div id="asideRightBranch" class="gr-boom" hidden>
+          <div class="panel-hd"><h2>Top 景气行业</h2></div>
+          <p class="gr-boom-tip" id="boomBranchTip">辖区产业景气 · 点击柱条切换筛选</p>
+          <div id="boomBarChart" class="gr-boom-chart"></div>
+          <div class="gr-boom-subhd">近六月走势</div>
+          <div id="boomTrendChart" class="gr-boom-chart gr-boom-chart-sm"></div>
+          <div class="gr-boom-subhd">六维景气雷达 <span id="boomRadarScore" class="gr-boom-score">—</span></div>
+          <div id="boomRadarChart" class="gr-boom-chart gr-boom-radar"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- app.js 兼容占位 -->
+  <div id="kpiStrip" hidden></div><div id="pieChart" hidden></div><div id="pieLegend" hidden></div>
+  <div id="gaugeChart" hidden></div><div id="coverStats" hidden></div><div id="trendLeft" hidden></div>
+  <div id="policyTbody" hidden></div><div id="radarChart" hidden></div><div id="chainRank" hidden></div>
+  <div id="heatMap" hidden></div><div id="tierBlocks" hidden></div><div id="trendRight" hidden></div>
+  <div id="bottomKpis" hidden></div><div id="chainIcons" hidden></div>
+  <div id="mask" hidden></div><div id="drawer" hidden></div>
+  <div id="drawerTitle" hidden></div><div id="drawerMeta" hidden></div>
+  <div id="drawerBody" hidden></div><div id="closeDrawer" hidden></div>
+  <div id="clockDate" hidden></div><div id="clockTime" hidden></div>
+
+  <script src="../data/mock.js"></script>
+  <script src="../data/geo-meta.js"></script>
+  <script src="../data/chengdu-branches-cache.js"></script>
+  <script src="../data/branches.js"></script>
+  <script src="../data/chains.js"></script>
+  <script src="../js/cmb-street-map.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="js/growth.js"></script>
+</body>
+</html>

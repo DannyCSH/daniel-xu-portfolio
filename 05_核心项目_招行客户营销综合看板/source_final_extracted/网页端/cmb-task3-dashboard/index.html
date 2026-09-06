@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="招商银行数字金融挑战赛任务三客户营销综合看板交互原型">
+  <title>链策智营 | 客户营销综合看板</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">AI</div>
+        <div>
+          <strong>链策智营</strong>
+          <span>企业金融智能工作台</span>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="主导航">
+        <button class="nav-item active" data-view="network">
+          <i data-lucide="map-pinned"></i><span>全国网点</span>
+        </button>
+        <button class="nav-item" data-view="dashboard">
+          <i data-lucide="layout-dashboard"></i><span>支行总览</span>
+        </button>
+        <button class="nav-item" data-view="industry">
+          <i data-lucide="network"></i><span>行业洞察</span>
+          <span class="nav-badge">5</span>
+        </button>
+        <button class="nav-item" data-view="policy">
+          <i data-lucide="radar"></i><span>政策雷达</span>
+          <span class="nav-badge alert">3</span>
+        </button>
+        <button class="nav-item" data-view="customer">
+          <i data-lucide="building-2"></i><span>客户中心</span>
+        </button>
+        <button class="nav-item" data-view="marketing">
+          <i data-lucide="briefcase-business"></i><span>营销工作台</span>
+          <span class="nav-badge" id="taskBadge">8</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-section">
+        <span class="sidebar-label">快捷入口</span>
+        <button class="side-action" id="openSources"><i data-lucide="database"></i><span>数据血缘</span></button>
+        <button class="side-action" id="openMethod"><i data-lucide="sliders-horizontal"></i><span>评分口径</span></button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="data-health"><span class="status-dot"></span><span>数据服务正常</span></div>
+        <small>最近同步 2026-07-17 18:30</small>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="mobileMenu" title="展开导航"><i data-lucide="menu"></i></button>
+          <div class="context-select">
+            <label for="branchSelect">经营机构</label>
+            <select id="branchSelect">
+              <option>深圳分行 · 南山支行</option>
+              <option>深圳分行 · 福田支行</option>
+              <option>深圳分行 · 宝安支行</option>
+            </select>
+          </div>
+          <div class="context-select wide-select">
+            <label for="industrySelect">重点产业链</label>
+            <select id="industrySelect">
+              <option value="semiconductor">半导体产业链</option>
+              <option value="robot">机器人产业链</option>
+              <option value="nev">新能源汽车产业链</option>
+              <option value="biomed">生物医药产业链</option>
+              <option value="lowalt">低空经济产业链</option>
+            </select>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="global-search">
+            <i data-lucide="search"></i>
+            <input id="globalSearch" type="search" placeholder="搜索支行 / 企业名称 / UID">
+          </div>
+          <button class="icon-button" id="notificationButton" title="消息提醒">
+            <i data-lucide="bell"></i><span class="notification-dot"></span>
+          </button>
+          <button class="user-button" title="账户菜单"><span>张</span><div><strong>张经理</strong><small>对公客户经理</small></div></button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="view active" id="view-network">
+          <div class="page-heading network-heading">
+            <div>
+              <div class="heading-line"><h1>全国经营网络</h1><span class="demo-tag">地图下钻</span></div>
+              <p>从省会城市进入属地网点，或直接搜索支行与企业</p>
+            </div>
+            <div class="heading-actions">
+              <span class="date-chip"><i data-lucide="radio-tower"></i><span id="networkScopeLabel">全国 · 省会节点</span></span>
+              <button class="secondary-button" id="resetNetworkMap"><i data-lucide="rotate-ccw"></i>返回全国</button>
+            </div>
+          </div>
+
+          <div class="network-layout">
+            <article class="panel national-map-panel">
+              <div class="panel-header">
+                <div><h2>机构与客户空间分布</h2><p>滚轮缩放 · 点击省份查看属地支行 · 点击支行进入区域总览</p></div>
+                <div class="network-kpis"><span><b>34</b> 省级节点</span><span><b>143</b> 城市分行</span><span><b>1,872</b> 支行</span></div>
+              </div>
+              <div class="national-map-stage">
+                <div id="networkMap" class="chart chart-map"></div>
+                <div class="map-mode-legend">
+                  <span><i class="capital-pulse"></i>省会 / 城市分行</span>
+                  <span><i class="branch-pin"></i>经营支行</span>
+                </div>
+                <div class="network-tip" id="networkTip"><i data-lucide="mouse-pointer-2"></i><span>点击省份进入属地网点层</span></div>
+              </div>
+            </article>
+
+            <aside class="network-side">
+              <article class="panel network-search-card">
+                <div class="panel-header"><div><h2>快速定位</h2><p>支行和企业共用检索入口</p></div></div>
+                <div class="network-search-box"><i data-lucide="search"></i><input id="networkSearch" type="search" placeholder="输入南山支行、智芯半导体"><button id="networkSearchButton" title="搜索"><i data-lucide="arrow-right"></i></button></div>
+                <div id="networkSearchResults" class="network-search-results"></div>
+              </article>
+              <article class="panel branch-list-card">
+                <div class="panel-header"><div><h2>重点经营机构</h2><p id="branchListSubtitle">全国高潜区域</p></div><span class="source-label">实时排序</span></div>
+                <div id="networkBranchList" class="network-branch-list"></div>
+              </article>
+              <article class="network-insight">
+                <span>AI 区域提示</span>
+                <strong>粤港澳大湾区高潜企业密度领先</strong>
+                <p>半导体、机器人与低空经济三条产业链机会集中，建议优先进入深圳属地网点。</p>
+              </article>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-dashboard">
+          <div class="page-heading">
+            <div>
+              <div class="heading-line"><h1>支行区域经营总览</h1><span class="demo-tag">AI 动态圈选</span></div>
+              <p id="dashboardSubtitle">深圳分行 · 南山支行 · 5km 管辖半径</p>
+            </div>
+            <div class="heading-actions">
+              <span class="date-chip"><i data-lucide="calendar-days"></i>2026年7月</span>
+              <button class="secondary-button" data-action="export"><i data-lucide="download"></i>导出经营简报</button>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <div class="metric-icon red"><i data-lucide="users"></i></div>
+              <div><span>管户客户</span><strong>1,286 <small>户</small></strong><p class="up">较上月 +38</p></div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-icon teal"><i data-lucide="landmark"></i></div>
+              <div><span>预测可批总额</span><strong>42.8 <small>亿元</small></strong><p class="up">较上月 +5.2%</p></div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-icon amber"><i data-lucide="sparkles"></i></div>
+              <div><span>高潜商机</span><strong>186 <small>户</small></strong><p>24 户待首次触达</p></div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-icon blue"><i data-lucide="shield-alert"></i></div>
+              <div><span>风险预警</span><strong>17 <small>户</small></strong><p class="down">较上月 -3</p></div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel map-panel">
+              <div class="panel-header">
+                <div><h2>支行管辖区产业企业</h2><p>点位大小代表企业分层，颜色深浅代表预测授信等级</p></div>
+                <span class="source-label" id="mapIndustryCount">半导体 · 2 户样例 / 328 户识别</span>
+              </div>
+              <div class="map-stage">
+                <div id="regionMap" class="chart chart-map"></div>
+                <div class="map-legend">
+                  <span><i class="legend-dot core"></i>核心层</span>
+                  <span><i class="legend-dot backbone"></i>骨干层</span>
+                  <span><i class="legend-dot basic"></i>基础 / 边缘层</span>
+                </div>
+                <div class="map-summary">
+                  <span>管辖中心</span><strong id="mapBranchName">南山支行</strong>
+                  <div><b id="mapCompanyTotal">328</b><small>链上企业</small></div>
+                  <div><b>5km</b><small>服务半径</small></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel branch-intel-panel">
+              <div class="panel-header">
+                <div><h2>产业景气与政策匹配</h2><p>五大产业链机会优先级</p></div>
+                <button class="icon-button subtle" id="refreshStrategy" title="刷新数据"><i data-lucide="refresh-cw"></i></button>
+              </div>
+              <div id="industryRanking" class="industry-ranking"></div>
+              <div class="policy-match-search">
+                <label for="branchPolicySearch">政策查询与客户匹配</label>
+                <div><input id="branchPolicySearch" placeholder="输入设备更新、专精特新"><button id="branchPolicyButton" title="匹配政策"><i data-lucide="scan-search"></i></button></div>
+                <p id="branchPolicyResult">“设备更新”匹配 12 户存量客户，最高契合度 96%</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="industry-strip" id="industryStrip"></div>
+
+          <article class="panel branch-analysis-panel">
+            <div class="panel-header">
+              <div><h2>AI 深度经营分析</h2><p>结论均附数据证据和下一步动作</p></div>
+              <div class="segmented" id="analysisTabs">
+                <button class="active" data-analysis="industry">产业链分析</button>
+                <button data-analysis="competitor">竞争对手</button>
+                <button data-analysis="upstream">上下游企业</button>
+              </div>
+            </div>
+            <div id="branchAnalysisContent" class="branch-analysis-content"></div>
+          </article>
+
+          <article class="panel table-panel">
+            <div class="panel-header">
+              <div><h2>重点营销机会</h2><p>按 AI 综合机会分排序，建议优先处理前 10 户</p></div>
+              <div class="table-tools">
+                <div class="filter-pills" id="opportunityFilters">
+                  <button class="active" data-filter="all">全部</button>
+                  <button data-filter="核心层">核心层</button>
+                  <button data-filter="高政策匹配">高政策匹配</button>
+                  <button data-filter="额度缺口">额度缺口</button>
+                </div>
+                <button class="text-button" data-nav="customer">查看全部<i data-lucide="arrow-right"></i></button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>客户名称</th><th>产业链 / 环节</th><th>企业分层</th><th>机会评分</th><th>预测可批额度</th><th>政策契合</th><th>推荐动作</th><th></th></tr></thead>
+                <tbody id="opportunityTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="view" id="view-industry">
+          <div class="page-heading">
+            <div><div class="heading-line"><h1>产业链深度洞察</h1><span class="demo-tag">任务二输出</span></div><p id="industrySubtitle">半导体产业链 · 深圳区域分析</p></div>
+            <div class="heading-actions"><button class="secondary-button" id="compareIndustry"><i data-lucide="git-compare-arrows"></i>产业链对比</button><button class="primary-button" id="industryReport"><i data-lucide="file-chart-column"></i>生成分析报告</button></div>
+          </div>
+
+          <div class="industry-overview">
+            <article class="prosperity-hero">
+              <div><span>综合景气度</span><strong id="industryScore">82.6</strong><p><i data-lucide="trending-up"></i>近 3 个月上升 4.8 分</p></div>
+              <div class="grade-block"><span>景气等级</span><strong id="industryGrade">景气上行</strong><small>建议扩大优质资产覆盖</small></div>
+            </article>
+            <article class="mini-stat"><span>链上企业</span><strong id="industryCompanies">6,618</strong><p>深圳区域 472 户</p></article>
+            <article class="mini-stat"><span>核心 / 骨干层</span><strong id="industryCore">18.7%</strong><p>较全行均值 +3.2pct</p></article>
+            <article class="mini-stat"><span>潜在融资需求</span><strong id="industryDemand">28.4亿</strong><p>未来 90 天预测</p></article>
+          </div>
+
+          <div class="three-column-grid industry-charts">
+            <article class="panel span-2"><div class="panel-header"><div><h2>景气度趋势与预测</h2><p>行内交易活跃度与行外产业指标融合</p></div><span class="source-label">月度 · AI 预测</span></div><div id="prosperityTrend" class="chart chart-medium"></div></article>
+            <article class="panel"><div class="panel-header"><div><h2>六维景气结构</h2><p>可解释评分贡献</p></div></div><div id="prosperityRadar" class="chart chart-medium"></div></article>
+          </div>
+
+          <article class="panel chain-panel">
+            <div class="panel-header"><div><h2>产业链图谱与瓶颈定位</h2><p>节点宽度代表交易规模，红色边框代表断链风险</p></div><div class="chain-legend"><span><i class="risk-line"></i>高风险节点</span><span><i class="normal-line"></i>正常节点</span></div></div>
+            <div class="chain-flow" id="chainFlow"></div>
+          </article>
+
+          <div class="two-column-grid">
+            <article class="panel"><div class="panel-header"><div><h2>企业分层结构</h2><p>区域与全行产业链结构对比</p></div></div><div id="tierChart" class="chart chart-small"></div></article>
+            <article class="panel"><div class="panel-header"><div><h2>经营信号</h2><p>近 30 天关键变化</p></div></div><div class="signal-list" id="signalList"></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-policy">
+          <div class="page-heading">
+            <div><div class="heading-line"><h1>属地产业政策雷达</h1><span class="demo-tag">公开信息融合</span></div><p>政策重点与行内客户自动匹配</p></div>
+            <div class="heading-actions"><button class="secondary-button" id="policySubscribe"><i data-lucide="rss"></i>订阅规则</button><button class="primary-button" id="policyScan"><i data-lucide="scan-search"></i>立即扫描</button></div>
+          </div>
+
+          <div class="policy-summary">
+            <article><span>近 30 天新增政策</span><strong>26</strong><p>国家级 4 · 省级 7 · 市区级 15</p></article>
+            <article><span>高相关政策</span><strong>8</strong><p>已匹配 146 户存量客户</p></article>
+            <article><span>潜在融资机会</span><strong>12.6亿</strong><p>设备更新与研发扩产为主</p></article>
+            <article class="urgent"><span>待响应窗口</span><strong>3</strong><p>7 天内截止申报</p></article>
+          </div>
+
+          <div class="policy-layout">
+            <article class="panel policy-feed-panel">
+              <div class="panel-header"><div><h2>政策情报流</h2><p>按客户匹配度与时效排序</p></div><div class="filter-pills" id="policyFilters"><button class="active" data-policy-filter="all">全部</button><button data-policy-filter="国家级">国家级</button><button data-policy-filter="深圳市">深圳市</button><button data-policy-filter="南山区">南山区</button></div></div>
+              <div class="policy-feed" id="policyFeed"></div>
+            </article>
+            <aside class="policy-side">
+              <article class="panel"><div class="panel-header"><div><h2>产业影响热度</h2><p>政策正向影响指数</p></div></div><div id="policyImpact" class="chart chart-small"></div></article>
+              <article class="panel match-panel"><div class="panel-header"><div><h2>今日高匹配客户</h2><p>建议在政策窗口期触达</p></div><button class="text-button" data-nav="customer">全部</button></div><div id="policyMatches" class="compact-list"></div></article>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-customer">
+          <div class="page-heading">
+            <div><div class="heading-line"><h1>客户 360° 画像</h1><span class="demo-tag">综合视图</span></div><p>从单客风险判断到链上价值识别</p></div>
+            <div class="heading-actions"><button class="secondary-button" id="previousCustomer"><i data-lucide="chevron-left"></i>上一户</button><button class="secondary-button" id="nextCustomer">下一户<i data-lucide="chevron-right"></i></button></div>
+          </div>
+
+          <div class="customer-shell">
+            <aside class="customer-list-panel">
+              <div class="customer-list-search"><i data-lucide="search"></i><input id="customerListSearch" placeholder="搜索客户"></div>
+              <div class="customer-list-filters"><button class="active" data-customer-filter="all">重点机会</button><button data-customer-filter="风险">风险</button><button data-customer-filter="已跟进">已跟进</button></div>
+              <div id="customerList" class="customer-list"></div>
+            </aside>
+
+            <div class="customer-detail">
+              <article class="customer-identity">
+                <div class="company-logo" id="companyLogo">智芯</div>
+                <div class="company-main"><div class="company-title"><h2 id="companyName">深圳智芯半导体有限公司</h2><span class="verified"><i data-lucide="badge-check"></i>工商存续</span></div><p id="companyMeta">专用设备制造 · 南山区 · 中型企业 · UID 44030520260018</p><div class="company-tags" id="companyTags"></div></div>
+                <div class="opportunity-score"><span>营销机会分</span><strong id="customerOpportunity">92</strong><small>Top 3%</small></div>
+                <div class="identity-actions"><button class="secondary-button" id="createTask"><i data-lucide="calendar-plus"></i>创建跟进</button><button class="primary-button" id="createPlan"><i data-lucide="wand-sparkles"></i>生成营销方案</button></div>
+              </article>
+
+              <div class="customer-kpis">
+                <article><span>预测获批额度<i data-lucide="info"></i></span><strong id="predictedCredit">7,800万</strong><p id="creditGap" class="up">较存量敞口 +2,600万</p></article>
+                <article><span>近 12 月结算量</span><strong id="settlement">3.26亿</strong><p class="up">同比 +18.4%</p></article>
+                <article><span>日均存款</span><strong id="deposit">4,860万</strong><p>结算留存率 14.9%</p></article>
+                <article><span>产业链地位</span><strong id="chainTier">核心层</strong><p id="chainRank">链上排名 12 / 6,618</p></article>
+                <article><span>政策契合度</span><strong id="policyMatchScore">94%</strong><p>命中 6 项扶持方向</p></article>
+              </div>
+
+              <article class="visit-intelligence">
+                <div class="visit-location"><span class="visit-icon"><i data-lucide="map-pin"></i></span><div><span>企业位置与联系电话</span><strong id="customerAddress">深圳市南山区科技园科苑路 18 号</strong><p id="customerPhone">0755-8888 2618</p></div></div>
+                <div class="visit-reminder"><span class="visit-icon amber"><i data-lucide="calendar-clock"></i></span><div><span>拜访提醒</span><strong id="visitAppointment">需提前 2 个工作日预约财务负责人</strong><p id="visitReferral">可由存量客户“鹏城精密”财务总监协助引荐</p></div></div>
+                <div class="visit-action"><span class="visit-icon teal"><i data-lucide="list-checks"></i></span><div><span>建议下一步</span><strong id="visitAction">本周携设备更新政策清单拜访</strong><p id="visitEvidence">依据：订单增长 18%、额度缺口 2,600 万、政策契合度 94%</p></div><button class="primary-button" id="scheduleVisit"><i data-lucide="calendar-plus"></i>加入日程</button></div>
+              </article>
+
+              <div class="three-column-grid customer-charts">
+                <article class="panel"><div class="panel-header"><div><h2>价值与风险画像</h2><p>模型评分可解释拆解</p></div></div><div id="customerRadar" class="chart chart-medium"></div></article>
+                <article class="panel span-2"><div class="panel-header"><div><h2>结算与资金沉淀趋势</h2><p>单位：万元</p></div><div class="segmented"><button class="active">近12月</button><button>近24月</button></div></div><div id="customerTrend" class="chart chart-medium"></div></article>
+              </div>
+
+              <div class="two-column-grid">
+                <article class="panel"><div class="panel-header"><div><h2>链上交易网络</h2><p>前五大交易对手与集中度</p></div><span class="risk-chip">集中度 42% · 中等</span></div><div id="customerNetwork" class="chart chart-medium"></div></article>
+                <article class="panel recommendation-panel"><div class="panel-header"><div><h2>AI 产品组合建议</h2><p>结合额度缺口与经营场景</p></div><span class="confidence">置信度 89%</span></div><div id="recommendations"></div><div class="evidence"><strong><i data-lucide="brain-circuit"></i>推荐依据</strong><p id="recommendationEvidence">订单增长、设备更新政策命中、结算回流稳定；建议以真实贸易背景和应收账款闭环控制风险。</p></div></article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-marketing">
+          <div class="page-heading">
+            <div><div class="heading-line"><h1>营销工作台</h1><span class="demo-tag">人机协同</span></div><p>策略生成、任务分派、跟进记录与效果复盘</p></div>
+            <div class="heading-actions"><button class="secondary-button" data-action="export"><i data-lucide="file-down"></i>导出名单</button><button class="primary-button" id="newCampaign"><i data-lucide="plus"></i>新建营销战役</button></div>
+          </div>
+
+          <div class="marketing-summary">
+            <article><span>本月目标客户</span><strong>186</strong><p>已触达 124 户</p></article>
+            <article><span>意向客户</span><strong>47</strong><p>转化率 37.9%</p></article>
+            <article><span>方案测算中</span><strong>18</strong><p>预计额度 6.8 亿元</p></article>
+            <article><span>已落地资产</span><strong>3.2亿</strong><p class="up">目标达成 68%</p></article>
+          </div>
+
+          <div class="two-column-grid marketing-top">
+            <article class="panel"><div class="panel-header"><div><h2>营销转化漏斗</h2><p>本月产业链客户经营进度</p></div><span class="source-label">截至 7月17日</span></div><div id="marketingFunnel" class="chart chart-medium"></div></article>
+            <article class="panel"><div class="panel-header"><div><h2>今日行动清单</h2><p>按价值与紧迫度排序</p></div><button class="text-button" id="completeAll">批量完成</button></div><div class="agenda-list" id="agendaList"></div></article>
+          </div>
+
+          <article class="panel campaign-panel">
+            <div class="panel-header"><div><h2>半导体设备更新专项营销</h2><p>AI 圈选 32 户 · 政策窗口剩余 12 天 · 目标资产 2.6 亿元</p></div><div class="campaign-progress"><span>战役进度</span><strong>62%</strong><div><i style="width:62%"></i></div></div></div>
+            <div class="campaign-grid">
+              <section><div class="campaign-column-title"><span>待触达</span><b>8</b></div><div id="stageTodo" class="campaign-items"></div></section>
+              <section><div class="campaign-column-title"><span>已沟通</span><b>12</b></div><div id="stageContacted" class="campaign-items"></div></section>
+              <section><div class="campaign-column-title"><span>方案推进</span><b>7</b></div><div id="stageProposal" class="campaign-items"></div></section>
+              <section><div class="campaign-column-title"><span>审批落地</span><b>5</b></div><div id="stageWon" class="campaign-items"></div></section>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button class="ai-fab" id="aiFab" title="AI 经营助手"><i data-lucide="bot"></i><span>问小招</span></button>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="drawer" id="sourceDrawer" aria-label="数据血缘">
+    <div class="drawer-header"><div><span class="eyebrow">DATA LINEAGE</span><h2>数据血缘与替换清单</h2></div><button class="icon-button drawer-close" title="关闭"><i data-lucide="x"></i></button></div>
+    <div class="drawer-content" id="sourceContent"></div>
+  </aside>
+
+  <aside class="drawer ai-drawer" id="aiDrawer" aria-label="AI经营助手">
+    <div class="drawer-header"><div><span class="eyebrow">AI COPILOT</span><h2>小招 · 经营助手</h2></div><button class="icon-button drawer-close" title="关闭"><i data-lucide="x"></i></button></div>
+    <div class="ai-context"><i data-lucide="scan-line"></i><div><span>当前分析上下文</span><strong id="aiContext">南山支行 · 半导体产业链</strong></div></div>
+    <div class="chat-stream" id="chatStream">
+      <div class="chat-message assistant"><div class="chat-avatar"><i data-lucide="bot"></i></div><div><p>已融合区域客户、产业景气、政策与授信预测结果。你可以直接问我经营问题。</p></div></div>
+    </div>
+    <div class="prompt-suggestions" id="promptSuggestions">
+      <button>本周最值得拜访的 5 户客户？</button>
+      <button>哪些企业存在额度提升空间？</button>
+      <button>生成半导体设备更新营销策略</button>
+    </div>
+    <form class="chat-input" id="chatForm"><input id="chatInput" placeholder="输入经营问题"><button type="submit" class="icon-button primary-icon" title="发送"><i data-lucide="send"></i></button></form>
+  </aside>
+
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header"><div><span class="eyebrow" id="modalEyebrow">DETAIL</span><h2 id="modalTitle">详情</h2></div><button class="icon-button modal-close" title="关闭"><i data-lucide="x"></i></button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer"><button class="secondary-button modal-close">关闭</button><button class="primary-button" id="modalPrimary">创建营销任务</button></div>
+  </div>
+
+  <div class="toast" id="toast"><i data-lucide="circle-check"></i><span>操作已完成</span></div>
+
+  <script src="assets/vendor/echarts.min.js"></script>
+  <script src="assets/vendor/lucide.min.js"></script>
+  <script src="assets/data/shenzhen-map.js"></script>
+  <script src="assets/js/sample-data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

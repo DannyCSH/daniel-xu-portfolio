@@ -1,0 +1,370 @@
+:root {
+  --bg: #f5f0e6;
+  --panel: #fffdf8;
+  --panel-strong: #f7f4ec;
+  --ink: #1d2a33;
+  --muted: #56626d;
+  --line: #d9d0c0;
+  --brand: #0f5b5a;
+  --brand-soft: #dff0eb;
+  --accent: #d08b38;
+  --accent-soft: #f7ead5;
+  --danger-soft: #f8e1d8;
+  --success-soft: #dcefd9;
+  --shadow: 0 18px 40px rgba(29, 42, 51, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Aptos", "Trebuchet MS", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(208, 139, 56, 0.14), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(15, 91, 90, 0.12), transparent 24%),
+    var(--bg);
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+}
+
+.sidebar {
+  padding: 28px 22px;
+  border-right: 1px solid rgba(29, 42, 51, 0.08);
+  background: rgba(255, 253, 248, 0.88);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand-block h1,
+.hero h2,
+.section-title {
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.brand-block h1 {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.05;
+}
+
+.brand-copy,
+.hero-subtitle,
+.muted {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.nav-list {
+  display: grid;
+  gap: 10px;
+  margin: 28px 0;
+}
+
+.nav-button {
+  width: 100%;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 14px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-button:hover {
+  transform: translateX(4px);
+  background: rgba(15, 91, 90, 0.06);
+}
+
+.nav-button.active {
+  background: var(--brand-soft);
+  border-color: rgba(15, 91, 90, 0.16);
+}
+
+.nav-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.nav-desc {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.sidebar-note {
+  margin-top: auto;
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+}
+
+.note-title {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.main-panel {
+  padding: 28px;
+}
+
+.hero,
+.section-panel {
+  background: var(--panel);
+  border: 1px solid rgba(29, 42, 51, 0.08);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  padding: 28px;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.hero h2 {
+  margin: 0;
+  font-size: 38px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 12px;
+  min-width: 340px;
+}
+
+.stat-card {
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+}
+
+.stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.section-panel {
+  padding: 24px;
+}
+
+.hidden {
+  display: none;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid rgba(29, 42, 51, 0.08);
+  background: var(--accent-soft);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 18px 0 22px;
+}
+
+.info-card {
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+}
+
+.info-card h4 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.info-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 840px;
+}
+
+th,
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #ece6dc;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+th {
+  background: #eef5f6;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tag.good {
+  background: var(--success-soft);
+}
+
+.tag.warn {
+  background: var(--accent-soft);
+}
+
+.tag.risk {
+  background: var(--danger-soft);
+}
+
+.layer-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.layer-card {
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(15, 91, 90, 0.06), transparent 55%),
+    var(--panel-strong);
+}
+
+.layer-card h4 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.layer-card p {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ink);
+}
+
+.bullets li {
+  margin-bottom: 8px;
+}
+
+.footer-callout {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(208, 139, 56, 0.12), rgba(15, 91, 90, 0.06));
+  border: 1px solid rgba(29, 42, 51, 0.08);
+}
+
+@media (max-width: 1024px) {
+  .page-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(29, 42, 51, 0.08);
+  }
+
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-stats {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-panel,
+  .sidebar {
+    padding: 18px;
+  }
+
+  .hero h2 {
+    font-size: 30px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+}
+

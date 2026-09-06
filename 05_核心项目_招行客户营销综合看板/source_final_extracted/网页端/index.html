@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>招商银行 · 属地客户经营工作台</title>
+  <style>
+    :root {
+      --red: #c00000;
+      --red-deep: #8f0000;
+      --ink: #1a1a1a;
+      --muted: #6a6a6a;
+      --line: #e8e2e0;
+      --paper: #f7f4f2;
+      --white: #ffffff;
+      --font: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", "Heiti SC", SimHei, sans-serif;
+      --display: "Songti SC", "STSong", "SimSun", "Noto Serif SC", serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ——— Top ——— */
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 36px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    body.is-scrolled .top {
+      border-bottom-color: var(--line);
+      box-shadow: 0 6px 24px rgba(28, 20, 18, 0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand-seal {
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      object-fit: contain;
+      flex-shrink: 0;
+      box-shadow: 0 3px 12px rgba(192, 0, 0, 0.2);
+    }
+    .brand h1 {
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--red);
+      line-height: 1.1;
+    }
+    .brand p {
+      margin-top: 3px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .top-nav a {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      transition: color 0.15s, background 0.15s;
+    }
+    .top-nav a:hover { color: var(--red); background: rgba(192, 0, 0, 0.06); }
+    .top-nav .cta {
+      color: #fff;
+      background: var(--red);
+      font-weight: 650;
+    }
+    .top-nav .cta:hover { background: var(--red-deep); color: #fff; }
+
+    /* ——— Hero ——— */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
+      align-items: center;
+      gap: 24px 40px;
+      padding: 28px 48px 48px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 60% at 78% 42%, rgba(192, 0, 0, 0.09), transparent 62%),
+        radial-gradient(ellipse 50% 45% at 12% 80%, rgba(184, 150, 62, 0.07), transparent 55%),
+        linear-gradient(180deg, #fff 0%, #faf7f5 100%);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(192, 0, 0, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192, 0, 0, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
+      pointer-events: none;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 480px;
+      animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.14em;
+      margin-bottom: 18px;
+    }
+    .hero-kicker i {
+      width: 28px;
+      height: 1px;
+      background: var(--red);
+      display: inline-block;
+    }
+    .hero-copy h2 {
+      font-family: var(--display);
+      font-size: clamp(36px, 4.6vw, 56px);
+      font-weight: 600;
+      color: var(--red);
+      letter-spacing: 0.12em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero-copy .lead {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 26em;
+      margin-bottom: 28px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      border: 1px solid transparent;
+      transition: transform 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--red); color: #fff; }
+    .btn-primary:hover { background: var(--red-deep); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .btn-ghost:hover { border-color: rgba(192, 0, 0, 0.35); color: var(--red); }
+
+    .hero-motto {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      border-left: 2px solid rgba(192, 0, 0, 0.35);
+      padding-left: 14px;
+    }
+    .hero-motto strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      margin-bottom: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-stage {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 640px);
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(72vh, 680px);
+      animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+    }
+    .mascot {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+      animation: bob 5.5s ease-in-out infinite;
+    }
+
+    .plate {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .plate:hover,
+    .plate:focus-visible {
+      transform: translateY(-10px) scale(1.05);
+      outline: none;
+    }
+    .plate-left { left: 4%; top: 20%; width: 28%; height: 22%; }
+    .plate-right { right: 1%; top: 20%; width: 28%; height: 22%; }
+    .plate-title {
+      font-size: clamp(20px, 2.6vw, 30px);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      line-height: 1.15;
+      transform: translateY(-10px);
+      text-shadow: 0 1px 0 rgba(255,255,255,.9), 0 2px 8px rgba(255,255,255,.75);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    .plate-left .plate-title { color: #c00000; }
+    .plate-right .plate-title {
+      transform: translate(12px, -10px);
+      color: #7a1515;
+      animation-delay: 0.35s;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      animation: fadeUp 1s ease 0.8s both;
+    }
+    .scroll-hint span {
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(180deg, var(--red), transparent);
+      animation: drip 1.6s ease-in-out infinite;
+    }
+
+    /* ——— Sections ——— */
+    .section {
+      padding: 72px 48px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .section-hd {
+      margin-bottom: 36px;
+      max-width: 640px;
+    }
+    .section-hd .eyebrow {
+      font-size: 12px;
+      color: var(--red);
+      letter-spacing: 0.18em;
+      font-weight: 650;
+      margin-bottom: 10px;
+    }
+    .section-hd h3 {
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .section-hd p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .band {
+      background: var(--paper);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .band .section { max-width: 1120px; }
+
+    /* Vision */
+    .vision-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+    .vision-item {
+      padding: 0;
+    }
+    .vision-item .label {
+      font-size: 12px;
+      color: var(--red);
+      letter-spacing: 0.16em;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .vision-item h4 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .vision-item p {
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .quote-strip {
+      margin-top: 40px;
+      padding: 28px 0 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px 28px;
+      align-items: start;
+    }
+    .quote-strip .mark {
+      font-family: var(--display);
+      font-size: 64px;
+      line-height: 0.8;
+      color: var(--red);
+      opacity: 0.35;
+    }
+    .quote-strip blockquote {
+      font-family: var(--display);
+      font-size: clamp(18px, 2.2vw, 24px);
+      line-height: 1.55;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+    }
+    .quote-strip cite {
+      display: block;
+      margin-top: 12px;
+      font-style: normal;
+      font-family: var(--font);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* Trends */
+    .trend-lead {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 32px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .trend-lead h3 {
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+    }
+    .trend-lead p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .pillar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .pillar {
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      color: var(--red);
+      border: 1px solid rgba(192, 0, 0, 0.22);
+      background: rgba(192, 0, 0, 0.04);
+      padding: 7px 12px;
+      border-radius: 4px;
+    }
+
+    .trend-list {
+      display: grid;
+      gap: 0;
+    }
+    .trend-row {
+      display: grid;
+      grid-template-columns: 72px minmax(120px, 0.7fr) minmax(0, 1.6fr) auto;
+      gap: 16px 20px;
+      align-items: start;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .trend-row:first-child { border-top: 1px solid var(--line); }
+    .trend-row .idx {
+      font-family: var(--display);
+      font-size: 28px;
+      color: var(--red);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+    .trend-row h4 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .trend-row .tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .trend-row p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .trend-row .signal {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--red);
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      padding-top: 4px;
+    }
+
+    /* Workbench bridge */
+    .bridge {
+      text-align: center;
+      padding: 64px 48px 72px;
+      background:
+        radial-gradient(ellipse 60% 80% at 50% 100%, rgba(192, 0, 0, 0.08), transparent 60%),
+        var(--white);
+    }
+    .bridge h3 {
+      font-family: var(--display);
+      font-size: clamp(24px, 2.8vw, 32px);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .bridge p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 36em;
+      margin: 0 auto 24px;
+    }
+    .bridge-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .foot {
+      text-align: center;
+      padding: 20px 16px 28px;
+      font-size: 11px;
+      color: #9a9a9a;
+      letter-spacing: 0.08em;
+      border-top: 1px solid var(--line);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.88; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translate(-50%, 8px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes drip {
+      0%, 100% { transform: scaleY(0.55); opacity: 0.45; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 20px 24px 56px;
+        text-align: center;
+      }
+      .hero-copy {
+        max-width: none;
+        margin: 0 auto;
+      }
+      .hero-copy .lead { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-motto {
+        text-align: left;
+        max-width: 28em;
+        margin: 0 auto;
+      }
+      .hero-stage { max-height: 56vh; }
+      .scroll-hint { display: none; }
+      .section { padding: 56px 24px; }
+      .vision-grid { grid-template-columns: 1fr; gap: 24px; }
+      .vision-item { padding: 0; }
+      .trend-lead { grid-template-columns: 1fr; }
+      .trend-row {
+        grid-template-columns: 48px 1fr;
+        gap: 8px 14px;
+      }
+      .trend-row p,
+      .trend-row .signal { grid-column: 2; }
+      .top { padding: 12px 16px; }
+      .top-nav a:not(.cta) { display: none; }
+      .bridge { padding: 48px 24px 56px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mascot, .plate-title, .hero-copy, .hero-stage, .scroll-hint, .scroll-hint span {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    if (new URLSearchParams(window.location.search).get("reset") === "1") {
+      sessionStorage.removeItem("task3_enterprise");
+      sessionStorage.removeItem("task3_branch");
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.search = "";
+      cleanUrl.hash = "";
+      history.replaceState(null, "", cleanUrl.href);
+    }
+  </script>
+  <header class="top">
+    <div class="brand">
+      <img class="brand-seal" src="assets/cmb-logo.png" alt="招商银行" width="40" height="40" />
+      <div>
+        <h1>招商银行</h1>
+        <p>属地客户经营工作台</p>
+      </div>
+    </div>
+    <nav class="top-nav" aria-label="页面导航">
+      <a href="#trends">产业趋势</a>
+      <a href="#vision">使命愿景</a>
+      <a href="#start">开始作业</a>
+      <a class="cta" href="#start">进入工作台</a>
+    </nav>
+  </header>
+
+  <section class="hero" aria-label="欢迎">
+    <div class="hero-copy">
+      <h2>因您而变</h2>
+      <p class="lead">
+        以客户为中心，深耕属地产业链。面向对公客户经理，把网点、产业景气、政策窗口与客户画像连成可执行的经营动作。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="growth/index.html">增量拓客</a>
+        <a class="btn btn-ghost" href="stock/index.html">存量经营</a>
+      </div>
+      <div class="hero-motto">
+        <strong>战略愿景</strong>
+        锚定成为创新驱动、模式领先、特色鲜明的最佳价值创造银行。
+      </div>
+    </div>
+
+    <div class="hero-stage" id="start" aria-label="经营模式选择">
+      <img
+        class="mascot"
+        src="assets/zhao-mascot.png?v=2"
+        alt="招财猫吉祥物，双手托盘"
+        draggable="false"
+      />
+      <a class="plate plate-left" href="growth/index.html" aria-label="进入增量拓客">
+        <span class="plate-title">增量拓客</span>
+      </a>
+      <a class="plate plate-right" href="stock/index.html" aria-label="进入存量经营">
+        <span class="plate-title">存量经营</span>
+      </a>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">向下了解招行与产业趋势<span></span></div>
+  </section>
+
+  <section class="band" id="trends">
+    <div class="section">
+      <div class="trend-lead">
+        <h3>宏观产业趋势<br />与属地经营抓手</h3>
+        <p>
+          中国式现代化产业体系加快构建。对公经营从「单户尽调」走向「链上经营」：看清景气结构、政策窗口与上下游关系，才能在正确的时点触达正确的企业。
+        </p>
+      </div>
+
+      <div class="pillar-row" aria-label="五篇大文章">
+        <span class="pillar">科技金融</span>
+        <span class="pillar">绿色金融</span>
+        <span class="pillar">普惠金融</span>
+        <span class="pillar">养老金融</span>
+        <span class="pillar">数字金融</span>
+      </div>
+
+      <div class="trend-list">
+        <article class="trend-row">
+          <div class="idx">01</div>
+          <div>
+            <h4>低空经济</h4>
+            <span class="tag">新质生产力 · 场景落地加速</span>
+          </div>
+          <p>
+            起降设施、航电飞控与运营场景政策密集出台，产业链融资需求从研发走向资产与项目贷。属地网点适合沿链识别核心节点与专精特新。
+          </p>
+          <div class="signal">景气上行</div>
+        </article>
+        <article class="trend-row">
+          <div class="idx">02</div>
+          <div>
+            <h4>半导体与先进制造</h4>
+            <span class="tag">国产替代 · 设备更新</span>
+          </div>
+          <p>
+            设备、材料与设计制造环节资本开支持续，账期与供应链金融空间大。公开中标与扩产信号，往往领先于报表体现融资需求。
+          </p>
+          <div class="signal">确定性较强</div>
+        </article>
+        <article class="trend-row">
+          <div class="idx">03</div>
+          <div>
+            <h4>新能源汽车与储能</h4>
+            <span class="tag">链主生态 · 结算沉淀</span>
+          </div>
+          <p>
+            中游制造与核心零部件议价分化明显。对银行而言，价值在链主辐射力与高频结算回流，适合「先结算、后授信」的经营节奏。
+          </p>
+          <div class="signal">高位分化</div>
+        </article>
+        <article class="trend-row">
+          <div class="idx">04</div>
+          <div>
+            <h4>生物医药</h4>
+            <span class="tag">研发周期 · 政策匹配</span>
+          </div>
+          <p>
+            临床与产业化节奏决定现金流波动。专精特新、知识产权与属地专项支持，是客户经理切入研发信用与里程碑融资的重要窗口。
+          </p>
+          <div class="signal">温和复苏</div>
+        </article>
+        <article class="trend-row">
+          <div class="idx">05</div>
+          <div>
+            <h4>工业机器人</h4>
+            <span class="tag">智造升级 · 票据活跃</span>
+          </div>
+          <p>
+            上游零部件与系统集成订单随制造业技改回暖。票据池、订单融资与设备更新贷可组合服务，宜结合链上协同度筛选整链开发名单。
+          </p>
+          <div class="signal">稳中向好</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="vision">
+    <div class="section">
+      <div class="section-hd">
+        <div class="eyebrow">ABOUT CMB</div>
+        <h3>使命 · 愿景 · 经营理念</h3>
+        <p>
+          招商银行成立于深圳蛇口，是中国境内第一家完全由企业法人持股的股份制商业银行。长期秉持「因您而变」「因势而变」，服务实体经济与民生福祉。
+        </p>
+      </div>
+
+      <div class="vision-grid">
+        <article class="vision-item">
+          <div class="label">价值观</div>
+          <h4>以客户为中心<br />为客户创造价值</h4>
+          <p>
+            把客户比作太阳，招行始终围绕客户需求生长变化。工作台亦围绕客户经理「今日可执行」设计，把模型结果转化为拜访与融资动作。
+          </p>
+        </article>
+        <article class="vision-item">
+          <div class="label">战略愿景</div>
+          <h4>最佳价值创造银行</h4>
+          <p>
+            创新驱动、模式领先、特色鲜明。聚焦财富管理、金融科技、风险管理三大核心能力，纵深推进价值银行战略。
+          </p>
+        </article>
+        <article class="vision-item">
+          <div class="label">经营理念</div>
+          <h4>因势而变 · 因您而变</h4>
+          <p>
+            顺应产业升级与区域战略，服务科技金融、绿色金融、普惠金融、养老金融、数字金融「五篇大文章」，以属地洞察赢得经营先机。
+          </p>
+        </article>
+      </div>
+
+      <div class="quote-strip">
+        <div class="mark" aria-hidden="true">“</div>
+        <div>
+          <blockquote>
+            把自身发展放到党和国家事业全局中择高处立，把自身战略融入国家战略大局中向宽处行，坚持服务实体经济的根本宗旨。
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bridge">
+    <h3>从宏观洞察，到今日作业</h3>
+    <p>
+      选择增量拓客，沿全国网点进入辖区圈选潜客；选择存量经营，深耕已有客户、政策雷达与营销闭环。同一套属地逻辑，两种经营侧重。
+    </p>
+    <div class="bridge-actions">
+      <a class="btn btn-primary" href="growth/index.html">开始增量拓客</a>
+      <a class="btn btn-ghost" href="stock/index.html">开始存量经营</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    招商银行 · 对公客户经理 Demo · 内容参考招行公开战略表述与产业公开信息，仅供训练营演示
+  </footer>
+
+  <script>
+    const onScroll = () => {
+      document.body.classList.toggle("is-scrolled", window.scrollY > 8);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  </script>
+</body>
+</html>

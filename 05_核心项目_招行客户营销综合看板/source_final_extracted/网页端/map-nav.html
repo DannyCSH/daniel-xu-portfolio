@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网点导航 · 属地客户营销</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body class="page-map">
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">招</div>
+      <div class="logo-text">招商银行</div>
+    </div>
+    <div class="header-center">
+      <h1>属地客户营销综合看板</h1>
+      <div class="header-tags">网点导航 · 连续放大 · 锁定支行</div>
+    </div>
+    <div class="header-right">
+      <div id="clockDate">—</div>
+      <div id="clockTime">—</div>
+    </div>
+  </header>
+
+  <main class="map-page-main">
+    <section class="search-bar map-search">
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          id="branchSearch"
+          type="search"
+          autocomplete="off"
+          placeholder="搜索招行网点，例如：武侯支行、春熙路、天府…"
+        />
+        <button type="button" id="branchSearchBtn">搜索</button>
+        <div id="branchSearchDrop" class="search-drop" hidden></div>
+      </div>
+      <p class="search-hint">滚轮放大：省会 → 地市 → 网点；点击网点进入辖区总览</p>
+    </section>
+
+    <div class="map-stage map-stage-solo">
+      <div class="map-pedestal"></div>
+      <div id="chinaMap"></div>
+      <div class="map-legend-card">
+        <div><i class="dot capital"></i>省会</div>
+        <div><i class="dot city"></i>地市</div>
+        <div><i class="dot branch"></i>招行网点</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- 兼容旧逻辑中可能引用的隐藏节点 -->
+  <div id="kpiStrip" hidden></div>
+  <div id="pieChart" hidden></div>
+  <div id="pieLegend" hidden></div>
+  <div id="gaugeChart" hidden></div>
+  <div id="coverStats" hidden></div>
+  <div id="trendLeft" hidden></div>
+  <div id="policyTbody" hidden></div>
+  <div id="radarChart" hidden></div>
+  <div id="chainRank" hidden></div>
+  <div id="heatMap" hidden></div>
+  <div id="tierBlocks" hidden></div>
+  <div id="trendRight" hidden></div>
+  <div id="bottomKpis" hidden></div>
+  <div id="chainIcons" hidden></div>
+  <div id="mask" hidden></div>
+  <div id="drawer" hidden></div>
+  <div id="drawerTitle" hidden></div>
+  <div id="drawerMeta" hidden></div>
+  <div id="drawerBody" hidden></div>
+  <div id="closeDrawer" hidden></div>
+
+  <script src="data/mock.js"></script>
+  <script src="data/geo-meta.js"></script>
+  <script src="data/chengdu-branches-cache.js"></script>
+  <script src="data/branches.js"></script>
+  <script src="data/chains.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

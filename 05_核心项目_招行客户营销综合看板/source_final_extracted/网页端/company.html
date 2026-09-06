@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业客户画像</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="page-nav">
+      <a class="back" href="#" id="backBranch">← 返回辖区总览</a>
+      <div>
+        <h1 id="coTitle">企业客户画像</h1>
+        <div class="sub" id="coSub">360° 全景画像 · 可执行拜访建议</div>
+      </div>
+    </nav>
+
+    <div class="profile-grid">
+      <section class="card profile-hero">
+        <div>
+          <div class="card-title" style="margin-bottom:6px;">基本信息</div>
+          <h2 id="coName" style="font-size:22px;"></h2>
+          <div class="chips" id="coChips"></div>
+          <div class="kv-grid" style="margin-top:14px;" id="bizKv"></div>
+        </div>
+        <div class="stat-pill" style="min-width:160px;">
+          <div class="lab">授信获批区间建议</div>
+          <div class="val" id="creditBand" style="font-size:18px;line-height:1.35;"></div>
+          <div class="lab" style="margin-top:8px;">链上地位评分</div>
+          <div class="val" id="tierScore" style="font-size:28px;"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">财务表现</div>
+        <div class="kv-grid" id="finKv"></div>
+        <div class="chart-mini" id="finChart" style="margin-top:12px;"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">结算活跃度</div>
+        <div class="stat-row">
+          <div class="stat-pill">
+            <div class="lab">活跃度指数</div>
+            <div class="val" id="settleVal">—</div>
+          </div>
+          <div class="stat-pill">
+            <div class="lab">产业链位置</div>
+            <div class="val" id="streamVal" style="font-size:18px;">—</div>
+          </div>
+        </div>
+        <div class="chart-mini" id="settleChart"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">地理位置与联系方式</div>
+        <div class="kv-grid">
+          <div class="kv" style="grid-column:1/-1;">
+            <div class="k">注册地址 / 经营地址</div>
+            <div class="v" id="coAddr">—</div>
+          </div>
+          <div class="kv">
+            <div class="k">联系电话</div>
+            <div class="v" id="coPhone">—</div>
+          </div>
+          <div class="kv">
+            <div class="k">坐标（演示）</div>
+            <div class="v" id="coCoord" style="font-family:var(--mono);font-size:12px;">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">拜访提醒（客户经理）</div>
+        <div class="legend-note" id="visitRemind" style="margin-top:0;"></div>
+      </section>
+
+      <section class="card" style="grid-column:1/-1;">
+        <div class="card-title">
+          可执行经营建议
+          <span class="hint">规则引擎 · 专家经验 Rule Base</span>
+        </div>
+        <div class="advice-list" id="adviceList"></div>
+      </section>
+    </div>
+  </div>
+
+  <script src="data/mock.js"></script>
+  <script src="data/chains.js"></script>
+  <script src="js/company.js"></script>
+</body>
+</html>
